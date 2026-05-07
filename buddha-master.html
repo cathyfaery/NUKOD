@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禪宗祖師尋蹤 - 傳承千載法脈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-paper: #fdfbf7;
+            --ink-black: #2d2d2d;
+            --zen-gold: #8b7355;
+            --zen-wood: #a3937b;
+        }
+        body {
+            background-color: var(--bg-paper);
+            color: var(--ink-black);
+            font-family: 'Noto Serif TC', serif;
+            scroll-behavior: smooth;
+        }
+        /* 針對事蹟閱讀區域使用正黑體 (Noto Sans TC) */
+        .story-font {
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+        /* 針對金句區域使用正圓體 (Zen Maru Gothic) */
+        .quote-font {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-style: normal; /* 確保不傾斜 */
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        .zen-card {
+            background: #ffffff;
+            box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05);
+            border: 1px solid rgba(139, 115, 85, 0.1);
+            border-radius: 2rem;
+            transition: all 0.5s ease;
+        }
+        .ink-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--zen-gold), transparent);
+        }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading-spin {
+            border: 3px solid rgba(139, 115, 85, 0.1);
+            border-top: 3px solid var(--zen-gold);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        input::placeholder { color: #ccc; font-weight: 200; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6 md:p-12">
+
+    <header class="text-center mb-16 mt-8 fade-in">
+        <h1 class="text-5xl md:text-7xl font-bold mb-8 tracking-[0.4em] text-[#8b7355]">禪宗祖師尋蹤</h1>
+        <div class="ink-line w-64 mx-auto mb-8"></div>
+        <p class="text-xl md:text-2xl opacity-60 tracking-[0.6em] font-light">法脈相承 · 直指人心 · 見性成佛</p>
+    </header>
+
+    <section class="w-full max-w-3xl mb-20 fade-in" style="animation-delay: 0.2s;">
+        <form id="searchForm" class="relative flex items-center">
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="輸入祖師名號，如：虛雲、趙州、慧能..."
+                class="w-full p-8 text-2xl rounded-3xl outline-none border-2 border-stone-100 transition-all focus:border-[#8b7355] focus:shadow-2xl text-center shadow-sm"
+            />
+            <button
+                type="submit"
+                id="searchBtn"
+                class="absolute right-6 px-8 py-4 rounded-2xl text-white font-bold bg-[#8b7355] hover:bg-[#6d5a43] transition-all active:scale-95"
+            >
+                探尋
+            </button>
+        </form>
+        
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+            <button onclick="quickSearch('達摩')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50 transition-all">達摩</button>
+            <button onclick="quickSearch('慧能')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50 transition-all">慧能</button>
+            <button onclick="quickSearch('馬祖道一')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50 transition-all">馬祖道一</button>
+            <button onclick="quickSearch('虛雲')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50 transition-all">虛雲</button>
+            <button onclick="quickSearch('臨濟義玄')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50 transition-all">臨濟義玄</button>
+        </div>
+    </section>
+
+    <div id="loader" class="hidden flex flex-col items-center gap-6 my-20">
+        <div class="loading-spin"></div>
+        <p class="text-xl tracking-widest text-stone-400 animate-pulse">正在調閱雲端法海資料...</p>
+    </div>
+
+    <div id="errorMessage" class="hidden max-w-xl text-center p-6 bg-red-50 text-red-700 rounded-2xl mb-10"></div>
+
+    <main id="resultArea" class="hidden w-full max-w-5xl space-y-12 pb-40 fade-in">
+        
+        <!-- 傳承圖譜卡片 -->
+        <div class="zen-card p-10 md:p-20">
+            <div class="flex items-center gap-4 mb-16">
+                <div class="w-2 h-10 bg-[#8b7355] rounded-full"></div>
+                <h2 class="text-3xl font-bold text-[#8b7355]">法脈傳承譜系</h2>
+            </div>
+            
+            <div class="flex flex-col items-center text-center">
+                <!-- 師父 -->
+                <div class="mb-4">
+                    <p class="text-sm uppercase tracking-widest opacity-40 mb-4">師承 Teacher</p>
+                    <div id="masterTeacher" class="text-2xl px-12 py-6 border-2 border-dashed border-stone-200 rounded-3xl text-[#8b7355]"></div>
+                </div>
+
+                <div class="h-16 w-px bg-gradient-to-b from-stone-200 to-stone-400 my-4"></div>
+
+                <!-- 當代祖師 -->
+                <div class="relative group">
+                    <div class="absolute -inset-6 bg-[#8b7355] opacity-10 rounded-[3rem] blur-xl"></div>
+                    <div id="masterName" class="relative text-5xl md:text-6xl font-bold text-white bg-[#8b7355] px-20 py-10 rounded-[2.5rem] shadow-2xl"></div>
+                </div>
+
+                <div class="h-16 w-px bg-gradient-to-b from-stone-400 to-stone-200 my-4"></div>
+
+                <!-- 弟子 -->
+                <div class="w-full">
+                    <p class="text-sm uppercase tracking-widest opacity-40 mb-6">法嗣弟子 Disciples</p>
+                    <div id="masterDisciples" class="flex flex-wrap justify-center gap-6"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 事蹟卡片 -->
+        <div class="zen-card p-10 md:p-20 relative overflow-hidden">
+            <div class="flex items-center gap-4 mb-16">
+                <div class="w-2 h-10 bg-[#8b7355] rounded-full"></div>
+                <h2 class="text-3xl font-bold text-[#8b7355]">禪師事蹟與公案</h2>
+            </div>
+
+            <div class="mb-16">
+                <div class="relative py-14 px-10 text-center bg-stone-50 rounded-[3rem]">
+                    <!-- 使用 quote-font 正圓體，移除傾斜 -->
+                    <p id="masterSummary" class="quote-font text-3xl md:text-5xl leading-relaxed text-[#8b7355]"></p>
+                </div>
+            </div>
+
+            <article id="masterStory" class="story-font text-2xl md:text-3xl leading-[2.2] text-stone-700 text-justify space-y-10 indent-12"></article>
+
+            <div class="mt-24 pt-10 border-t border-stone-100 text-center">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-300 hover:text-stone-600 transition-all uppercase tracking-widest text-sm">
+                    Back to Top
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto py-16 text-center opacity-30 text-sm tracking-widest font-light">
+        <p>法脈不孤 · 萬古常明</p>
+        <p class="mt-2 uppercase">Zen Master Archive Interface v2.6</p>
+    </footer>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const loader = document.getElementById('loader');
+        const resultArea = document.getElementById('resultArea');
+        const errorMessage = document.getElementById('errorMessage');
+
+        async function fetchZenMaster(name) {
+            if (!name) return;
+
+            loader.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            window.scrollTo({ top: loader.offsetTop - 100, behavior: 'smooth' });
+
+            const systemPrompt = `你是一位佛教歷史學家。請針對給出的禪宗祖師，提供 JSON 格式資料。
+            嚴格要求：只回傳 JSON 內容，不要包含 markdown 標籤。
+            格式：
+            {
+              "name": "姓名",
+              "teacher": "師父",
+              "disciples": ["弟子1", "弟子2"],
+              "story": "詳細事蹟（約400字，分段落）",
+              "summary": "核心金句或禪語"
+            }`;
+
+            const userQuery = `請查詢禪宗祖師「${name}」的詳細法脈與事蹟資料。`;
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            try {
+                // 使用指數退避的 fetch 邏輯 (簡單實作)
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+
+                const data = await response.json();
+                const rawJson = data.candidates[0].content.parts[0].text;
+                const master = JSON.parse(rawJson);
+
+                renderResult(master);
+            } catch (err) {
+                console.error(err);
+                errorMessage.textContent = "於雲端法海中暫時未能尋獲此祖師之詳細記載，請嘗試其他名號。";
+                errorMessage.classList.remove('hidden');
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function renderResult(master) {
+            document.getElementById('masterName').textContent = master.name;
+            document.getElementById('masterTeacher').textContent = master.teacher || "法脈溯源中";
+            document.getElementById('masterSummary').textContent = `「 ${master.summary} 」`;
+            
+            const discContainer = document.getElementById('masterDisciples');
+            discContainer.innerHTML = '';
+            if (master.disciples && master.disciples.length > 0) {
+                master.disciples.forEach(d => {
+                    const el = document.createElement('div');
+                    el.className = "px-8 py-4 rounded-2xl border border-stone-200 text-xl bg-stone-50 hover:bg-white transition-all cursor-default";
+                    el.textContent = d;
+                    discContainer.appendChild(el);
+                });
+            } else {
+                discContainer.innerHTML = '<span class="text-stone-300 italic">文字記錄暫佚</span>';
+            }
+
+            const storyContainer = document.getElementById('masterStory');
+            storyContainer.innerHTML = master.story.split('\n').map(p => `<p>${p}</p>`).join('');
+
+            resultArea.classList.remove('hidden');
+            window.scrollTo({ top: resultArea.offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function quickSearch(name) {
+            searchInput.value = name;
+            fetchZenMaster(name);
+        }
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            fetchZenMaster(searchInput.value);
+        });
+    </script>
+</body>
+</html>

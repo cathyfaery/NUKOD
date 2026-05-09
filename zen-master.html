@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>禪宗祖師尋蹤｜Cathy Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&displ[...]
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+CJK+TC:wght@400;700&family=Noto+Sans+CJK+TC:wght@300;400;500&family=Noto+Serif+CJK+JP:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg-paper: #fdfbf7; --ink: #2d2d2d; --zen-gold: #8b7355; }
-        body { background-color: var(--bg-paper); color: var(--ink); font-family: 'Noto Serif TC', serif; scroll-behavior: smooth; }
-        .story-font { font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: 0.02em; line-height: 2.2; }
-        .quote-font { font-family: 'Zen Maru Gothic', sans-serif; font-style: normal; font-weight: 500; letter-spacing: 0.05em; }
-        .title-font { font-family: 'Noto Serif JP', serif; font-weight: 700; letter-spacing: 0.08em; }
+        body { background-color: var(--bg-paper); color: var(--ink); font-family: 'Noto Serif CJK TC', serif; scroll-behavior: smooth; }
+        .story-font { font-family: 'Noto Sans CJK TC', sans-serif; font-weight: 300; letter-spacing: 0.02em; line-height: 2.2; }
+        .quote-font { font-family: 'Noto Serif CJK TC', serif; font-style: normal; font-weight: 700; letter-spacing: 0.05em; }
+        .title-font { font-family: 'Noto Serif CJK JP', serif; font-weight: 700; letter-spacing: 0.08em; }
+        .input-font { font-family: 'Noto Sans CJK TC', sans-serif; font-weight: 400; }
+        .button-font { font-family: 'Noto Sans CJK TC', sans-serif; font-weight: 500; letter-spacing: 0.05em; }
         .zen-card { background: #ffffff; border: 1px solid rgba(139, 115, 85, 0.1); border-radius: 2.5rem; box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05); }
         .fade-in { animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -37,37 +39,48 @@
         }
         #searchInput::placeholder {
             color: rgba(120, 113, 108, 0.5);
+            font-family: 'Noto Sans CJK TC', sans-serif;
+        }
+        .quick-search-btn {
+            font-family: 'Noto Sans CJK TC', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+        .search-button {
+            font-family: 'Noto Sans CJK TC', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.08em;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-6 md:p-12">
 
-    <header class="text-center mb-16 mt-8 fade-in">
-        <h1 class="title-font text-4xl md:text-6xl font-bold mb-8 tracking-[0.12em] md:tracking-[0.25em] text-[#8b7355]">禪宗祖師尋蹤</h1>
-        <p class="text-xl md:text-2xl opacity-60 tracking-[0.6em] font-light">法脈相承 · 直指人心</p>
+    <header class="text-center mb-16 mt-8 fade-in w-full">
+        <h1 class="title-font text-5xl md:text-7xl font-bold mb-8 tracking-[0.15em] md:tracking-[0.25em] text-[#8b7355]">禪宗祖師尋蹤</h1>
+        <p class="story-font text-lg md:text-2xl opacity-60 tracking-[0.08em] font-light">法脈相承 · 直指人心</p>
     </header>
 
-    <section class="w-full max-w-3xl mb-20 fade-in">
-        <form id="searchForm" class="relative flex items-center gap-2 md:gap-0">
-            <input id="searchInput" type="text" placeholder="輸入祖師名號，如：虛雲、趙州..." class="w-full p-4 md:p-8 text-lg md:text-2xl rounded-3xl outline-none border-2 border-stone-100 focus:border-[#8b7355]" />
-            <button type="submit" class="px-4 md:px-8 py-4 rounded-2xl text-white font-bold bg-[#8b7355] hover:bg-[#6d5a43] transition-all text-sm md:text-base whitespace-nowrap">探尋</button>
+    <section class="w-full max-w-3xl mb-20 fade-in px-4">
+        <form id="searchForm" class="relative flex items-center gap-2 md:gap-0 justify-center">
+            <input id="searchInput" type="text" placeholder="輸入祖師名號，如：虛雲、趙州..." class="input-font w-full max-w-md p-4 md:p-6 text-base md:text-lg rounded-3xl outline-none border-2 border-stone-200 focus:border-[#8b7355] focus:shadow-md transition-all"/>
+            <button type="submit" class="search-button px-6 md:px-8 py-4 md:py-6 rounded-2xl text-white font-bold bg-[#8b7355] hover:bg-[#6d5a43] transition-all text-sm md:text-base whitespace-nowrap ml-2">探尋</button>
         </form>
-        <div class="mt-8 flex flex-wrap justify-center gap-3 md:gap-4">
-            <button onclick="quickSearch('達摩')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">達摩</button>
-            <button onclick="quickSearch('慧可')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">慧可</button>
-            <button onclick="quickSearch('僧璨')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">僧璨</button>
-            <button onclick="quickSearch('道信')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">道信</button>
+        <div class="mt-12 flex flex-wrap justify-center gap-3 md:gap-4 w-full">
+            <button onclick="quickSearch('達摩')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">達摩</button>
+            <button onclick="quickSearch('慧可')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">慧可</button>
+            <button onclick="quickSearch('僧璨')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">僧璨</button>
+            <button onclick="quickSearch('道信')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">道信</button>
             
-            <button onclick="quickSearch('弘忍')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">弘忍</button>
-            <button onclick="quickSearch('慧能')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">慧能</button>
-            <button onclick="quickSearch('臨濟')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">臨濟</button>
-            <button onclick="quickSearch('虛雲')" class="px-4 md:px-6 py-2 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors">虛雲</button>
+            <button onclick="quickSearch('弘忍')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">弘忍</button>
+            <button onclick="quickSearch('慧能')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">慧能</button>
+            <button onclick="quickSearch('臨濟')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">臨濟</button>
+            <button onclick="quickSearch('虛雲')" class="quick-search-btn px-5 md:px-6 py-2 md:py-3 rounded-full border border-stone-200 text-sm md:text-base text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white hover:bg-stone-50 transition-all">虛雲</button>
         </div>
     </section>
 
     <div id="loader" class="hidden flex flex-col items-center gap-4 my-20">
         <div class="loading-spin"></div>
-        <p class="text-stone-400 tracking-widest text-lg animate-pulse">正在從雲端法海調閱資料...</p>
+        <p class="story-font text-stone-400 tracking-widest text-lg animate-pulse">正在從雲端法海調閱資料...</p>
     </div>
 
     <main id="resultArea" class="hidden w-full max-w-5xl space-y-16 pb-40 fade-in">
@@ -75,16 +88,16 @@
             <p class="text-stone-300 text-xs tracking-widest mb-8 uppercase">Master Lineage / 法脈傳承</p>
             
             <div class="lineage-connector">
-                <div id="masterTeacher" class="text-2xl md:text-3xl text-[#8b7355] font-light mb-4"></div>
+                <div id="masterTeacher" class="story-font text-xl md:text-2xl text-[#8b7355] font-light mb-4"></div>
                 <div class="lineage-line-top"></div>
                 
-                <div id="masterName" class="text-5xl md:text-7xl font-bold text-white bg-[#8b7355] inline-block px-16 md:px-20 py-8 md:py-10 rounded-[3rem] shadow-2xl my-4"></div>
+                <div id="masterName" class="title-font text-5xl md:text-7xl font-bold text-white bg-[#8b7355] inline-block px-16 md:px-20 py-8 md:py-10 rounded-[3rem] shadow-2xl my-4"></div>
                 
                 <div class="lineage-line-bottom"></div>
                 <div id="masterDisciples" class="flex flex-wrap justify-center gap-4 mt-8 w-full"></div>
             </div>
             
-            <p class="mt-12 text-stone-400 text-base font-light">※ 若法嗣弟子眾多，僅以部份呈現。未完備處請至佛學規範資料庫詳閱。</p>
+            <p class="story-font mt-12 text-stone-400 text-base font-light">※ 若法嗣弟子眾多，僅以部份呈現。未完備處請至佛學規範資料庫詳閱。</p>
         </div>
 
         <div class="zen-card p-10 md:p-20">
@@ -93,7 +106,7 @@
                 <p id="masterSummary" class="quote-font text-3xl md:text-5xl text-[#8b7355] leading-relaxed px-4"></p>
                 <span class="absolute bottom-6 right-10 text-6xl text-stone-200 opacity-30">」</span>
             </div>
-            <article id="masterStory" class="story-font text-2xl md:text-3xl text-stone-700 text-justify space-y-10 indent-12"></article>
+            <article id="masterStory" class="story-font text-lg md:text-xl text-stone-700 text-justify space-y-8 indent-12"></article>
         </div>
     </main>
 
@@ -136,7 +149,7 @@
             document.getElementById('masterTeacher').textContent = m.teacher || "溯源中";
             document.getElementById('masterSummary').textContent = m.summary;
             document.getElementById('masterDisciples').innerHTML = (m.disciples || []).map(d => 
-                `<span class="px-6 md:px-8 py-2 md:py-3 border border-stone-200 rounded-full text-lg md:text-xl text-stone-600 bg-stone-50 hover:bg-stone-100 transition-colors">${d}</span>`
+                `<span class="story-font px-6 md:px-8 py-2 md:py-3 border border-stone-200 rounded-full text-base md:text-lg text-stone-600 bg-stone-50 hover:bg-stone-100 transition-colors">${d}</span>`
             ).join('');
             document.getElementById('masterStory').innerHTML = m.story.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
             document.getElementById('resultArea').classList.remove('hidden');

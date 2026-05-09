@@ -15,147 +15,67 @@
             --soft-bg: #f7f3ed;
         }
         
-        body { 
-            background-color: var(--bg-paper); 
-            color: var(--ink); 
-            font-family: 'Noto Sans TC', sans-serif; 
-            scroll-behavior: smooth; 
-        }
-
-        /* 一、莊嚴穩重型標題 */
-        .title-font { 
-            font-family: 'Noto Serif TC', serif; 
-            font-weight: 700; 
-            letter-spacing: 0.3em; 
-            color: var(--zen-gold);
-        }
-
-        /* 二、輕淡好看字型 (搜尋框與按鈕) */
-        .search-input-font { 
-            font-family: 'Noto Sans TC', sans-serif; 
-            font-weight: 300; 
-            letter-spacing: 0.05em;
-        }
-        
-        .button-font { 
-            font-family: 'Noto Sans TC', sans-serif; 
-            font-weight: 400; 
-            letter-spacing: 0.1em;
-        }
-
-        .quote-font { 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            font-style: normal; 
-            font-weight: 500; 
-            letter-spacing: 0.05em; 
-        }
-
-        .story-font { 
-            font-family: 'Noto Sans TC', sans-serif; 
-            font-weight: 300; 
-            letter-spacing: 0.02em; 
-            line-height: 2.2; 
-        }
-
-        .zen-card { 
-            background: #ffffff; 
-            border: 1px solid rgba(139, 115, 85, 0.1); 
-            border-radius: 2.5rem; 
-            box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05); 
-        }
-
-        /* 二、強化版傳承連接線 */
-        .lineage-connector {
-            width: 2px;
-            height: 48px;
-            background-color: var(--line-color);
-            margin: 0 auto;
-            position: relative;
-        }
-        .lineage-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--zen-gold);
-            border-radius: 50%;
-            position: absolute;
-            left: -2px;
-        }
-        .dot-top { top: -3px; }
-        .dot-bottom { bottom: -3px; }
-
-        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
+        body { background-color: var(--bg-paper); color: var(--ink); font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; }
+        .title-font { font-family: 'Noto Serif TC', serif; font-weight: 700; letter-spacing: 0.3em; color: var(--zen-gold); }
+        .search-input-font { font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: 0.05em; }
+        .button-font { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; letter-spacing: 0.1em; }
+        .quote-font { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 500; letter-spacing: 0.05em; }
+        .story-font { font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: 0.02em; line-height: 2.2; }
+        .zen-card { background: #ffffff; border: 1px solid rgba(139, 115, 85, 0.1); border-radius: 2.5rem; box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05); }
+        .lineage-connector { width: 2px; height: 48px; background-color: var(--line-color); margin: 0 auto; position: relative; }
+        .lineage-dot { width: 6px; height: 6px; background-color: var(--zen-gold); border-radius: 50%; position: absolute; left: -2px; }
+        .dot-top { top: -3px; } .dot-bottom { bottom: -3px; }
+        .daily-section { background-color: var(--soft-bg); border-left: 4px solid var(--zen-gold); }
         .loading-spin { border: 3px solid rgba(139, 115, 85, 0.1); border-top: 3px solid var(--zen-gold); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .hidden { display: none; }
-
-        input::placeholder {
-            color: rgba(120, 113, 108, 0.4);
-            font-weight: 200;
-        }
-
-        /* 日用反照區塊 */
-        .daily-section {
-            background-color: var(--soft-bg);
-            border-left: 4px solid var(--zen-gold);
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-6 md:p-12">
 
-    <header class="text-center mb-16 mt-8 fade-in w-full">
+    <header class="text-center mb-16 mt-8 w-full">
         <h1 class="title-font text-5xl md:text-7xl mb-8">禪宗祖師尋蹤</h1>
         <p class="story-font text-lg md:text-2xl opacity-60 tracking-[0.5em] font-light">法脈相承 · 直指人心</p>
     </header>
 
-    <section class="w-full max-w-3xl mb-20 fade-in px-4">
+    <!-- 搜尋與快速按鈕 -->
+    <section class="w-full max-w-3xl mb-20 px-4">
         <form id="searchForm" class="relative flex items-center justify-center gap-2">
-            <input id="searchInput" type="text" placeholder="輸入祖師名號，如：趙州、虛雲..." 
-                   class="search-input-font w-full max-w-md p-5 text-lg md:text-xl rounded-3xl outline-none border-2 border-stone-100 focus:border-[#8b7355] focus:shadow-md transition-all shadow-sm"/>
-            <button type="submit" class="button-font px-8 py-5 rounded-2xl text-white bg-[#8b7355] hover:bg-[#6d5a43] transition-all text-lg whitespace-nowrap shadow-sm">
-                探尋
-            </button>
+            <input id="searchInput" type="text" placeholder="輸入祖師名號..." class="search-input-font w-full max-w-md p-5 text-lg md:text-xl rounded-3xl outline-none border-2 border-stone-100 focus:border-[#8b7355] shadow-sm"/>
+            <button type="submit" class="button-font px-8 py-5 rounded-2xl text-white bg-[#8b7355] hover:bg-[#6d5a43] transition-all text-lg whitespace-nowrap">探尋</button>
         </form>
-
-        <!-- 三、修正快速鈕排版：兩排四個 -->
         <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl mx-auto">
-            <button onclick="quickSearch('達摩')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">達摩</button>
-            <button onclick="quickSearch('慧可')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">慧可</button>
-            <button onclick="quickSearch('僧璨')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">僧璨</button>
-            <button onclick="quickSearch('道信')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">道信</button>
-            <button onclick="quickSearch('弘忍')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">弘忍</button>
-            <button onclick="quickSearch('慧能')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">慧能</button>
-            <button onclick="quickSearch('臨濟')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">臨濟</button>
-            <button onclick="quickSearch('虛雲')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">虛雲</button>
+            <button onclick="quickSearch('達摩')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">達摩</button>
+            <button onclick="quickSearch('慧能')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">慧能</button>
+            <button onclick="quickSearch('趙州')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">趙州</button>
+            <button onclick="quickSearch('臨濟')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">臨濟</button>
+            <button onclick="quickSearch('馬祖道一')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">馬祖道一</button>
+            <button onclick="quickSearch('德山宣鑑')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">德山宣鑑</button>
+            <button onclick="quickSearch('虛雲')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">虛雲</button>
+            <button onclick="quickSearch('廣欽')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] bg-white text-base">廣欽</button>
         </div>
     </section>
 
     <div id="loader" class="hidden flex flex-col items-center gap-4 my-20">
         <div class="loading-spin"></div>
-        <p class="story-font text-stone-400 tracking-widest text-lg">正在從雲端法海調閱資料...</p>
+        <p class="story-font text-stone-400">正在調閱雲端法海...</p>
     </div>
 
-    <main id="resultArea" class="hidden w-full max-w-5xl space-y-16 pb-40 fade-in">
+    <main id="resultArea" class="hidden w-full max-w-5xl space-y-16 pb-40">
         <!-- 傳承卡片 -->
         <div class="zen-card p-10 md:p-20 text-center">
             <p class="story-font text-stone-300 text-xs tracking-widest mb-10 uppercase">Master Lineage / 法脈傳承</p>
             <div id="masterTeacher" class="story-font text-2xl text-[#8b7355] font-light"></div>
-            
             <div class="lineage-connector my-6"><div class="lineage-dot dot-top"></div></div>
-
             <div id="masterName" class="title-font text-6xl md:text-8xl font-bold text-white bg-[#8b7355] inline-block px-20 py-10 rounded-[3.5rem] shadow-2xl"></div>
-            
             <div class="lineage-connector my-6"><div class="lineage-dot dot-bottom"></div></div>
-
             <div id="masterDisciples" class="flex flex-wrap justify-center gap-4"></div>
-            <p class="story-font mt-12 text-stone-400 text-sm font-light">※ 若法嗣弟子眾多，僅以部份呈現。未完備處請至佛學規範資料庫詳閱。</p>
+            <p class="story-font mt-12 text-stone-400 text-sm font-light">※ 未完備處請至佛學規範資料庫詳閱。</p>
         </div>
 
-        <!-- 事蹟與日用 -->
+        <!-- 內容卡片 -->
         <div class="zen-card p-10 md:p-24">
-            <div class="bg-stone-50 p-12 rounded-[4rem] mb-20 text-center relative">
+            <div class="bg-stone-50 p-12 rounded-[4rem] mb-20 text-center">
                 <p id="masterSummary" class="quote-font text-3xl md:text-5xl text-[#8b7355] leading-relaxed"></p>
             </div>
             
@@ -163,25 +83,20 @@
                 <div class="w-1.5 h-8 bg-[#8b7355]"></div>
                 <h3 class="title-font text-2xl font-bold tracking-widest text-[#8b7355]">禪師事蹟與公案</h3>
             </div>
-            <article id="masterStory" class="story-font text-2xl md:text-3xl text-stone-700 text-justify space-y-10 indent-12 mb-20"></article>
+            <article id="masterStory" class="story-font text-2xl md:text-3xl text-stone-700 text-justify space-y-10 indent-12 mb-24"></article>
 
-            <!-- 禪師直指生活日用 -->
+            <!-- 禪師直指生活日用 (動契機) -->
             <div class="daily-section p-10 md:p-16 rounded-3xl">
                 <div class="flex items-center gap-3 mb-8">
-                    <svg class="w-8 h-8 text-[#8b7355]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <h4 class="title-font text-2xl font-bold tracking-widest text-[#8b7355]">禪師直指生活日用</h4>
+                    <svg class="w-10 h-10 text-[#8b7355]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <h4 class="title-font text-2xl md:text-3xl font-bold tracking-widest text-[#8b7355]">禪師直指生活日用</h4>
                 </div>
                 <div id="masterDailyLife" class="story-font text-2xl md:text-3xl text-stone-600 leading-relaxed italic border-t border-stone-200 pt-8"></div>
             </div>
         </div>
     </main>
 
-    <footer class="mt-auto py-20 text-center border-t border-stone-100 w-full opacity-30 text-sm tracking-[0.4em]">
-        法 脈 相 傳 · 燈 燈 無 盡
-    </footer>
-
     <script>
-        // --- 請確認您的 GAS 部署網址正確 ---
         const gasUrl = "https://script.google.com/macros/s/AKfycbwy7656q5ADAtCVjMZtHtJUc_66GN-TAK8X2LhCO_I_NLWD4Xxe9_lWx4Z3RHo0AHE/exec"; 
 
         async function fetchZenMaster(name) {
@@ -193,15 +108,18 @@
                 const response = await fetch(`${gasUrl}?name=${encodeURIComponent(name)}`);
                 const data = await response.json();
                 
-                // 解析 AI 回傳的 JSON (過濾掉可能的 markdown 標記)
-                let rawText = data.candidates[0].content.parts[0].text;
-                rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-                const master = JSON.parse(rawText);
+                // 動態解析：支援純 JSON 回傳或包裝過的回傳
+                let master = data;
+                if (data.candidates) {
+                    let rawText = data.candidates[0].content.parts[0].text;
+                    rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+                    master = JSON.parse(rawText);
+                }
                 
                 render(master);
             } catch (err) {
-                console.error("Fetch Error:", err);
-                alert("搜尋過程中發生阻礙，請確認 GAS 網址與 API Key 狀態。");
+                console.error(err);
+                alert("尋蹤失敗，請確認 GAS 部署是否正確設定為「所有人」存取。");
             } finally {
                 document.getElementById('loader').classList.add('hidden');
             }
@@ -212,12 +130,12 @@
             document.getElementById('masterTeacher').textContent = m.teacher || "溯源中";
             document.getElementById('masterSummary').textContent = m.summary;
             document.getElementById('masterDisciples').innerHTML = (m.disciples || []).map(d => 
-                `<span class="button-font px-8 py-3 border border-stone-200 rounded-full text-lg text-stone-600 bg-stone-50 hover:bg-stone-100 transition-colors">${d}</span>`
+                `<span class="button-font px-8 py-3 border border-stone-200 rounded-full text-lg text-stone-600 bg-stone-50">${d}</span>`
             ).join('');
             document.getElementById('masterStory').innerHTML = m.story.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
             
-            // 渲染生活日用
-            document.getElementById('masterDailyLife').innerHTML = m.daily_life ? `<p>${m.daily_life}</p>` : "<p>大眾日用處，即是覺醒時。</p>";
+            // 這裡不再顯示「寫死」的備援文字，而是顯示實際生成的內容
+            document.getElementById('masterDailyLife').innerHTML = m.daily_life ? `<p>${m.daily_life}</p>` : "<p>此祖師之日用指引尚在雲端法海中續編...</p>";
             
             document.getElementById('resultArea').classList.remove('hidden');
             window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 50, behavior: 'smooth' });

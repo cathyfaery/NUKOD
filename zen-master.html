@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禪宗祖師尋蹤｜Cathy Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-paper: #fdfbf7; --ink: #2d2d2d; --zen-gold: #8b7355; }
+        body { background-color: var(--bg-paper); color: var(--ink); font-family: 'Noto Serif TC', serif; scroll-behavior: smooth; }
+        .story-font { font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: 0.02em; line-height: 2.2; }
+        .quote-font { font-family: 'Zen Maru Gothic', sans-serif; font-style: normal; font-weight: 500; letter-spacing: 0.05em; }
+        .title-font { font-family: 'Noto Serif JP', serif; font-weight: 700; letter-spacing: 0.08em; }
+        .zen-card { background: #ffffff; border: 1px solid rgba(139, 115, 85, 0.1); border-radius: 2.5rem; box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05); }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loading-spin { border: 3px solid rgba(139, 115, 85, 0.1); border-top: 3px solid var(--zen-gold); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+        .lineage-connector {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        .lineage-line-top {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(139, 115, 85, 0.6), rgba(139, 115, 85, 0.4));
+        }
+        .lineage-line-bottom {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(139, 115, 85, 0.4), rgba(139, 115, 85, 0.6));
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6 md:p-12">
+
+    <header class="text-center mb-16 mt-8 fade-in">
+        <h1 class="title-font text-4xl md:text-6xl font-bold mb-8 tracking-[0.12em] md:tracking-[0.25em] text-[#8b7355]">禪宗祖師尋蹤</h1>
+        <p class="text-xl md:text-2xl opacity-60 tracking-[0.6em] font-light">法脈相承 · 直指人心 · 見性成佛</p>
+    </header>
+
+    <section class="w-full max-w-3xl mb-20 fade-in">
+        <form id="searchForm" class="relative flex items-center">
+            <input id="searchInput" type="text" placeholder="輸入祖師名號，如：虛雲、趙州..." class="w-full p-8 text-2xl rounded-3xl outline-none border-2 border-stone-100 focus:border-[#8b7355]">
+            <button type="submit" class="absolute right-6 px-8 py-4 rounded-2xl text-white font-bold bg-[#8b7355] hover:bg-[#6d5a43] transition-all">探尋</button>
+        </form>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <button onclick="quickSearch('達摩')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355]">達摩</button>
+            <button onclick="quickSearch('慧能')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355]">慧能</button>
+            <button onclick="quickSearch('臨濟')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355]">臨濟</button>
+            <button onclick="quickSearch('虛雲')" class="px-6 py-2 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355]">虛雲</button>
+        </div>
+    </section>
+
+    <div id="loader" class="hidden flex flex-col items-center gap-4 my-20">
+        <div class="loading-spin"></div>
+        <p class="text-stone-400 tracking-widest text-lg animate-pulse">正在從雲端法海調閱資料...</p>
+    </div>
+
+    <main id="resultArea" class="hidden w-full max-w-5xl space-y-16 pb-40 fade-in">
+        <div class="zen-card p-10 md:p-20 text-center">
+            <p class="text-stone-300 text-xs tracking-widest mb-8 uppercase">Master Lineage / 法脈傳承</p>
+            
+            <div class="lineage-connector">
+                <div id="masterTeacher" class="text-2xl md:text-3xl text-[#8b7355] font-light mb-4"></div>
+                <div class="lineage-line-top"></div>
+                
+                <div id="masterName" class="text-5xl md:text-7xl font-bold text-white bg-[#8b7355] inline-block px-16 md:px-20 py-8 md:py-10 rounded-[3rem] shadow-2xl my-4"></div>
+                
+                <div class="lineage-line-bottom"></div>
+                <div id="masterDisciples" class="flex flex-wrap justify-center gap-4 mt-8 w-full"></div>
+            </div>
+            
+            <p class="mt-12 text-stone-400 text-base font-light">※ 若法嗣弟子眾多，僅以部份呈現。未完備處請至佛學規範資料庫詳閱。</p>
+        </div>
+
+        <div class="zen-card p-10 md:p-20">
+            <div class="bg-stone-50 p-12 rounded-[4rem] mb-20 text-center relative">
+                <span class="absolute top-6 left-10 text-6xl text-stone-200 opacity-30">「</span>
+                <p id="masterSummary" class="quote-font text-3xl md:text-5xl text-[#8b7355] leading-relaxed px-4"></p>
+                <span class="absolute bottom-6 right-10 text-6xl text-stone-200 opacity-30">」</span>
+            </div>
+            <article id="masterStory" class="story-font text-2xl md:text-3xl text-stone-700 text-justify space-y-10 indent-12"></article>
+        </div>
+    </main>
+
+    <script>
+        // --- 重要：請貼入您的 GAS 部署網址 ---
+        const gasUrl = "https://script.google.com/macros/s/AKfycbwy7656q5ADAtCVjMZtHtJUc_66GN-TAK8X2LhCO_I_NLWD4Xxe9_lWx4Z3RHo0AHE/exec"; 
+
+        async function fetchZenMaster(name) {
+            if (!name) return;
+            if (gasUrl.includes("YOUR_GAS")) {
+                alert("請先完成 GAS 部署並在程式碼中填入 URL。");
+                return;
+            }
+
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('resultArea').classList.add('hidden');
+
+            try {
+                const response = await fetch(`${gasUrl}?name=${encodeURIComponent(name)}`);
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                // 解析內容
+                let rawText = data.candidates[0].content.parts[0].text;
+                rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+                const master = JSON.parse(rawText);
+                
+                render(master);
+            } catch (err) {
+                console.error("Debug Error:", err);
+                alert("發生錯誤，請檢查 GAS 部署是否正確設定為「所有人」存取，且 API Key 是否有效。");
+            } finally {
+                document.getElementById('loader').classList.add('hidden');
+            }
+        }
+
+        function render(m) {
+            document.getElementById('masterName').textContent = m.name;
+            document.getElementById('masterTeacher').textContent = m.teacher || "溯源中";
+            document.getElementById('masterSummary').textContent = m.summary;
+            document.getElementById('masterDisciples').innerHTML = (m.disciples || []).map(d => 
+                `<span class="px-6 md:px-8 py-2 md:py-3 border border-stone-200 rounded-full text-lg md:text-xl text-stone-600 bg-stone-50 hover:bg-stone-100 transition-colors">${d}</span>`
+            ).join('');
+            document.getElementById('masterStory').innerHTML = m.story.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+            document.getElementById('resultArea').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function quickSearch(n) { document.getElementById('searchInput').value = n; fetchZenMaster(n); }
+        document.getElementById('searchForm').addEventListener('submit', (e) => { e.preventDefault(); fetchZenMaster(document.getElementById('searchInput').value); });
+    </script>
+</body>
+</html>

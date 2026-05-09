@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>禪宗祖師尋蹤｜法脈導覽</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google 開源字型：思源宋體、思源黑體、Zen Maru Gothic -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&family=Noto+Sans+TC:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --bg-paper: #fdfbf7; 
             --ink: #2d2d2d; 
             --zen-gold: #8b7355; 
+            --line-color: rgba(139, 115, 85, 0.4);
         }
         
         body { 
@@ -21,7 +21,6 @@
             scroll-behavior: smooth; 
         }
 
-        /* 一、莊嚴穩重型標題 (思源宋體) */
         .title-font { 
             font-family: 'Noto Serif TC', serif; 
             font-weight: 700; 
@@ -29,7 +28,6 @@
             color: var(--zen-gold);
         }
 
-        /* 二、輕淡好看字型 (搜尋框與按鈕) */
         .search-input-font { 
             font-family: 'Noto Sans TC', sans-serif; 
             font-weight: 300; 
@@ -42,7 +40,6 @@
             letter-spacing: 0.1em;
         }
 
-        /* 三、正圓體金句 (Zen Maru Gothic) */
         .quote-font { 
             font-family: 'Zen Maru Gothic', sans-serif; 
             font-style: normal; 
@@ -50,7 +47,6 @@
             letter-spacing: 0.05em; 
         }
 
-        /* 正黑體內容 (思源黑體) */
         .story-font { 
             font-family: 'Noto Sans TC', sans-serif; 
             font-weight: 300; 
@@ -64,6 +60,25 @@
             border-radius: 2.5rem; 
             box-shadow: 0 10px 40px rgba(139, 115, 85, 0.05); 
         }
+
+        /* 強化版法脈連接線 */
+        .lineage-connector {
+            width: 2px;
+            height: 48px;
+            background-color: var(--line-color);
+            margin: 0 auto;
+            position: relative;
+        }
+        .lineage-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--zen-gold);
+            border-radius: 50%;
+            position: absolute;
+            left: -2px;
+        }
+        .dot-top { top: -3px; }
+        .dot-bottom { bottom: -3px; }
 
         .fade-in { animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -82,13 +97,11 @@
 <body class="min-h-screen flex flex-col items-center p-6 md:p-12">
 
     <header class="text-center mb-16 mt-8 fade-in w-full">
-        <!-- 修正標題字體 -->
         <h1 class="title-font text-5xl md:text-7xl mb-8">禪宗祖師尋蹤</h1>
         <p class="story-font text-lg md:text-2xl opacity-60 tracking-[0.5em] font-light">法脈相承 · 直指人心</p>
     </header>
 
     <section class="w-full max-w-3xl mb-20 fade-in px-4">
-        <!-- 修正搜尋框與按鈕字體 -->
         <form id="searchForm" class="relative flex items-center justify-center gap-2">
             <input id="searchInput" type="text" placeholder="輸入祖師名號，如：趙州、虛雲..." 
                    class="search-input-font w-full max-w-md p-5 text-lg md:text-xl rounded-3xl outline-none border-2 border-stone-100 focus:border-[#8b7355] focus:shadow-md transition-all shadow-sm"/>
@@ -97,7 +110,6 @@
             </button>
         </form>
 
-        <!-- 三、修正快速祖師鈕排版：兩排，每排四個 -->
         <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl mx-auto">
             <button onclick="quickSearch('達摩')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">達摩</button>
             <button onclick="quickSearch('慧可')" class="button-font px-4 py-3 rounded-full border border-stone-200 text-stone-500 hover:border-[#8b7355] hover:text-[#8b7355] bg-white transition-all text-base">慧可</button>
@@ -117,23 +129,33 @@
     </div>
 
     <main id="resultArea" class="hidden w-full max-w-5xl space-y-16 pb-40 fade-in">
-        <!-- 傳承卡片 -->
+        <!-- 傳承卡片：重新設計連接線 -->
         <div class="zen-card p-10 md:p-20 text-center">
             <p class="story-font text-stone-300 text-xs tracking-widest mb-10 uppercase">Master Lineage / 法脈傳承</p>
-            <div id="masterTeacher" class="story-font text-2xl text-[#8b7355] font-light mb-6"></div>
-            <div class="w-px h-12 bg-stone-100 mx-auto mb-6"></div>
+            <div id="masterTeacher" class="story-font text-2xl text-[#8b7355] font-light"></div>
+            
+            <!-- 上連接線 -->
+            <div class="lineage-connector my-6">
+                <div class="lineage-dot dot-top"></div>
+            </div>
+
             <div id="masterName" class="title-font text-6xl md:text-8xl font-bold text-white bg-[#8b7355] inline-block px-20 py-10 rounded-[3.5rem] shadow-2xl"></div>
-            <div class="w-px h-12 bg-stone-100 mx-auto mt-6 mb-6"></div>
-            <div id="masterDisciples" class="flex flex-wrap justify-center gap-4 mt-6"></div>
+            
+            <!-- 下連接線 -->
+            <div class="lineage-connector my-6">
+                <div class="lineage-dot dot-bottom"></div>
+            </div>
+
+            <div id="masterDisciples" class="flex flex-wrap justify-center gap-4"></div>
+            
             <p class="story-font mt-12 text-stone-400 text-sm font-light">※ 若法嗣弟子眾多，僅以部份呈現。未完備處請至佛學規範資料庫詳閱。</p>
         </div>
 
-        <!-- 事蹟卡片 -->
+        <!-- 事蹟卡片：移除裝飾引號 -->
         <div class="zen-card p-10 md:p-24">
             <div class="bg-stone-50 p-12 rounded-[4rem] mb-20 text-center relative">
-                <span class="absolute top-6 left-10 text-6xl text-stone-200 opacity-30">「</span>
+                <!-- 裝飾引號已移除，保持簡潔 -->
                 <p id="masterSummary" class="quote-font text-3xl md:text-5xl text-[#8b7355] leading-relaxed"></p>
-                <span class="absolute bottom-6 right-10 text-6xl text-stone-200 opacity-30">」</span>
             </div>
             <div class="flex items-center gap-4 mb-10">
                 <div class="w-1.5 h-8 bg-[#8b7355]"></div>
@@ -148,7 +170,6 @@
     </footer>
 
     <script>
-        // --- 請確認您的 GAS 部署網址正確 ---
         const gasUrl = "https://script.google.com/macros/s/AKfycbwy7656q5ADAtCVjMZtHtJUc_66GN-TAK8X2LhCO_I_NLWD4Xxe9_lWx4Z3RHo0AHE/exec"; 
 
         async function fetchZenMaster(name) {
@@ -160,7 +181,6 @@
                 const response = await fetch(`${gasUrl}?name=${encodeURIComponent(name)}`);
                 const data = await response.json();
                 
-                // 處理可能包含 markdown 標籤的 JSON
                 let rawText = data.candidates[0].content.parts[0].text;
                 rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
                 const master = JSON.parse(rawText);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Algorithmic Fairness Audit Dashboard (Based on UCI N=4424 Real Data)</title>
+    <title>AI Algorithmic Fairness Audit Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -14,12 +14,12 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; } /* Lighter background */
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; } 
         .transition-all { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-panel { background: rgba(255, 255, 255, 1); backdrop-filter: blur(10px); }
         .progress-bar { transition: width 1s ease-in-out; }
         
-        /* Custom scrollbar for better visibility */
+        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -28,7 +28,7 @@
 </head>
 <body class="text-slate-800 h-screen flex flex-col md:flex-row overflow-hidden">
 
-    <!-- Left Sidebar: 6 RQs (Light Theme & Larger Fonts) -->
+    <!-- Left Sidebar: 6 RQs -->
     <aside class="w-full md:w-1/3 lg:w-1/4 bg-white text-slate-800 flex flex-col h-full border-r border-slate-200 shadow-2xl z-10 overflow-y-auto">
         <div class="p-6 border-b border-slate-200 bg-slate-50">
             <h1 class="text-2xl font-black leading-tight mb-2 text-blue-700">InSITE 2026<br>Algorithmic Fairness Audit</h1>
@@ -45,10 +45,11 @@
     <!-- Right Main Content Area -->
     <main class="flex-1 h-full overflow-y-auto relative p-6 md:p-10 bg-slate-50">
         
+        <!-- Welcome State -->
         <div id="welcome-state" class="h-full flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-6">
             <i data-lucide="database" class="w-24 h-24 text-blue-600 mb-4 drop-shadow-sm"></i>
             <h2 class="text-4xl font-black text-slate-800">Algorithmic Bias and Proxy Variables Audit</h2>
-            <p class="text-xl text-slate-600 leading-relaxed font-medium">Please select a Research Question (RQ) from the left to view the empirical evidence, legal analysis, and mathematical calculations based on the UCI student dropout dataset (4,424 real records).</p>
+            <p class="text-xl text-slate-600 leading-relaxed font-medium">Please select a Research Question (RQ) from the left to view the empirical evidence, systemic synthesis, and mathematical calculations.</p>
         </div>
 
         <div id="data-state" class="hidden flex-col h-full max-w-5xl mx-auto space-y-8 pb-16">
@@ -120,7 +121,7 @@
                 </div>
             </div>
 
-            <!-- Empirical Data and Computational Methodology Section (Light Theme) -->
+            <!-- Empirical Data and Computational Methodology Section (MOVED HERE) -->
             <div id="methodology-section" class="bg-white rounded-2xl p-8 shadow-md border border-slate-300">
                 <h3 class="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
                     <i data-lucide="sigma" class="w-7 h-7 text-indigo-700"></i> Empirical Data & Computational Methodology
@@ -162,33 +163,20 @@
                 </div>
             </div>
 
-            <!-- AI Ethics Review and Generation Area -->
-            <div class="bg-blue-50/50 rounded-2xl p-8 shadow-sm border border-blue-100 mt-auto">
-                <div class="flex justify-between items-center mb-6">
+            <!-- NEW: Systemic Synthesis Banner (MOVED TO BOTTOM AS CONCLUSION) -->
+            <div class="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-slate-300 mt-auto">
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2">
+                    <i data-lucide="zap" class="w-5 h-5 text-amber-500"></i> Systemic Synthesis: Problem ➡️ Solution
+                </h3>
+                <div class="space-y-6">
                     <div>
-                        <h3 class="text-2xl font-black text-indigo-900 flex items-center gap-3">
-                            <i data-lucide="bot" class="w-7 h-7 text-indigo-600"></i> Gemini AI Social Science Audit Analysis
-                        </h3>
-                        <p class="text-base text-indigo-700 mt-2 font-medium">Dynamically generate an academic audit report or a micro-qualitative narrative based on the real data above.</p>
+                        <span class="inline-block bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded mb-3 uppercase tracking-wide border border-rose-200">Status Quo (The Harm)</span>
+                        <p id="syn-prob" class="text-lg md:text-xl font-medium leading-relaxed text-slate-700"></p>
                     </div>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button onclick="generateAIAnalysis('audit')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg py-4 px-6 rounded-xl transition-all shadow-md flex justify-center items-center gap-3">
-                        <i data-lucide="file-text" class="w-5 h-5"></i> Generate Academic Audit Report
-                    </button>
-                    <button onclick="generateAIAnalysis('diary')" class="flex-1 bg-white hover:bg-slate-50 text-indigo-700 border-2 border-indigo-200 font-bold text-lg py-4 px-6 rounded-xl transition-all shadow-sm flex justify-center items-center gap-3">
-                        <i data-lucide="pen-tool" class="w-5 h-5"></i> Generate Vulnerable Student's Diary
-                    </button>
-                </div>
-
-                <!-- AI Generation Result Display Area -->
-                <div id="ai-loading" class="hidden mt-8 text-center py-10">
-                    <i data-lucide="loader-2" class="w-10 h-10 text-indigo-600 animate-spin mx-auto mb-4"></i>
-                    <p class="text-base text-indigo-700 font-bold">Gemini model is performing algorithmic analysis, please wait...</p>
-                </div>
-                <div id="ai-output-container" class="hidden mt-8 bg-white rounded-xl p-8 border border-indigo-200 text-lg text-slate-800 leading-relaxed shadow-inner max-h-96 overflow-y-auto prose prose-lg prose-indigo max-w-none">
-                    <!-- AI Content -->
+                    <div class="pt-6 border-t border-slate-200">
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded mb-3 uppercase tracking-wide border border-emerald-200">Transformation (The Solution)</span>
+                        <p id="syn-sol" class="text-lg md:text-xl font-black leading-relaxed text-indigo-900"></p>
+                    </div>
                 </div>
             </div>
 
@@ -196,144 +184,158 @@
     </main>
 
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Gemini API Configuration (Mandatory Setup)
-        const apiKey = ""; 
-
-        // 6 RQ Database (English Content)
+        // Comprehensive Database with New Synthesis Field
         const rqDatabase = [
             {
-                id: 'rq1',
-                badge: 'RQ1',
+                id: 'rq1', badge: 'RQ1',
                 title: 'Target Variable Distribution and Algorithmic Majority Tyranny',
-                theory: 'In the population of N=4424, Dropout (32.1%) and Graduate (49.9%) present an imbalanced distribution. If an early warning AI model only optimizes for "Accuracy", it will systematically favor predicting the majority group (Graduate), causing the algorithm to ignore the truly vulnerable minority group (Dropout) that needs help.',
+                theory: 'In the population of N=4424, Dropout (32.1%) and Graduate (49.9%) present an imbalanced distribution. If an early warning AI model only optimizes for "Accuracy", it will systematically favor predicting the majority group (Graduate), causing the algorithm to ignore the truly vulnerable minority group (Dropout).',
                 groupA: { name: 'Graduate Group', total: 4424, count: 2209, rate: 49.9, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 groupB: { name: 'Dropout Group', total: 4424, count: 1421, rate: 32.1, color: 'bg-rose-500', text: 'text-rose-600' },
                 levels: {
-                    l1: "Collected the final status of 4,424 students. The labels are simplified into static outcomes like 'Graduate' and 'Dropout', failing to record specific life events encountered midway (e.g., family crises). Label formation is based on a single administrative outcome and is overly flat.",
-                    l2: "When pursuing overall Accuracy, the model automatically assigns a higher weight to predicting the majority group (Graduate 49.9%). The cost of False Negatives (predicting high-risk as safe) caused by algorithmic optimization falls entirely on the vulnerable minority students.",
-                    l3: "If the design interface only displays 'Overall System Accuracy 85%' to users, it misleads teachers into thinking the system is accurate for everyone. The true marginalization of the dropout demographic is completely masked under a single performance metric.",
-                    l4: "High overall accuracy is often used by schools to 'justify' the deployment or purchase of the system. There is a lack of review mechanisms for prediction failures against minority groups. Governance should mandate the introduction of fairness metrics like Equalized Odds as criteria for stopping the system."
+                    l1: "Collected the final status of 4,424 students. The labels are simplified into static outcomes like 'Graduate' and 'Dropout', failing to record specific life events encountered midway (e.g., family crises).",
+                    l2: "When pursuing overall Accuracy, the model automatically assigns a higher weight to predicting the majority group. The cost of False Negatives caused by algorithmic optimization falls entirely on the vulnerable minority students.",
+                    l3: "If the design interface only displays 'Overall System Accuracy 85%' to users, it misleads teachers into thinking the system is accurate for everyone. The true marginalization is completely masked.",
+                    l4: "High overall accuracy is often used by schools to 'justify' the deployment of the system. Governance should mandate the introduction of fairness metrics like Equalized Odds as criteria for deployment."
+                },
+                synthesis: {
+                    prob: "The four layers conspire to make the needs of vulnerable students invisible: simplified labels, a greedy pursuit of overall accuracy, masked design metrics, and management's blind buy-in package 'majority tyranny' as objective precision.",
+                    sol: "By requiring multi-class context, cost-sensitive learning, and Equalized Odds audits, the system is transformed from a tool of exclusion into a targeted radar that forces the algorithm to confront its blind spots and protect minority students."
                 },
                 methodology: {
                     formula: "$$ P(Class_i) = \\frac{\\sum_{k=1}^{N} I(y_k = Class_i)}{N_{total}} $$",
                     process: "Total sample size N = 4424\nTotal Dropouts = 1421\nTotal Graduates = 2209\n\nP(Dropout) = 1421 / 4424 = 32.12%\nP(Graduate) = 2209 / 4424 = 49.93%",
-                    technique: "Basic Distribution Statistics and Class Imbalance Analysis.\nRationale: Before building an early warning system, the distribution of the label population must be determined. Without addressing this baseline bias, all machine learning algorithms will suffer from the 'majority rule shortcut' bias.",
+                    technique: "Basic Distribution Statistics and Class Imbalance Analysis.\nRationale: Before building an early warning system, the distribution of the label population must be determined.",
                     metric: "Accuracy Paradox. Meaning: When the population is imbalanced, a useless model that blindly predicts everyone 'will graduate' can still achieve an accuracy of over 50%.",
-                    result: "Empirical evidence shows a significant imbalance in the dataset. This proves that directly applying a standard AI classifier will sacrifice sensitivity to the 32% vulnerable dropouts because the algorithm greedily reduces overall error (Loss).",
-                    meaning: "If a school spends heavily on an AI early warning system boasting 'high accuracy', it might just be guessing—guessing that most people will 'graduate successfully'. The result: the numbers look good on paper, but not a single dropout student who truly needs a helping hand is caught."
+                    result: "Empirical evidence shows a significant imbalance in the dataset. Directly applying a standard AI classifier will sacrifice sensitivity to the 32% vulnerable dropouts.",
+                    meaning: "If a school spends heavily on an AI system boasting 'high accuracy', it might just be guessing that most people will 'graduate successfully'. The numbers look good, but struggling students are entirely missed."
                 }
             },
             {
-                id: 'rq2',
-                badge: 'RQ2',
+                id: 'rq2', badge: 'RQ2',
                 title: 'The "Poverty Penalty" of Tuition Payment Status',
-                theory: 'Empirical data shows that "Tuition fees up to date" is the most dominant predictive feature. The dropout rate for those who do not pay on time is as high as 83%. This constitutes a severe "poverty penalty"—AI directly translates economic deprivation into academic incompetence, depriving them of educational opportunities.',
+                theory: 'Empirical data shows that "Tuition fees up to date" is the most dominant predictive feature. The dropout rate for those who do not pay on time is as high as 83%. This constitutes a severe "poverty penalty".',
                 groupA: { name: 'Tuition Not Up to Date (Tuition = 0)', total: 548, count: 455, rate: 83.0, color: 'bg-rose-500', text: 'text-rose-600' },
                 groupB: { name: 'Tuition Up to Date (Tuition = 1)', total: 3876, count: 966, rate: 24.9, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 levels: {
-                    l1: "Collected the binary status of 'whether tuition is paid on time'. Completely fails to record the underlying reasons for late payment (e.g., delayed student loan disbursement, sudden unemployment, or family crises). The label roughly binds 'economic deprivation' with 'academic status'.",
-                    l2: "Due to the extreme dropout rate of 83% among non-payers, the model assigns extremely high weight to this feature (shortcut learning). The error penalty falls on vulnerable students who have short-term cash flow problems but high learning potential.",
-                    l3: "The early warning score interface is easily interpreted by counselors as 'the student has no intention to study' or 'lacks ability', completely masking the student's true predicament of 'lacking money, not intelligence', causing severe interface attribution misguidance.",
-                    l4: "If features are not calibrated and shielded, scores will be used to 'exclude' students from receiving additional educational investments. In terms of governance, students should have the right to appeal that their score was dragged down by financial status, and the administration must introduce Human-in-the-loop review."
+                    l1: "Collected the binary status of 'whether tuition is paid on time'. Completely fails to record the underlying reasons for late payment (e.g., delayed student loan disbursement).",
+                    l2: "Due to the extreme dropout rate of 83% among non-payers, the model assigns extremely high weight to this feature (shortcut learning), penalizing students with short-term cash flow problems.",
+                    l3: "The early warning score interface is easily interpreted by counselors as 'the student has no intention to study' or 'lacks ability', causing severe interface attribution misguidance.",
+                    l4: "If features are not calibrated, scores will be used to 'exclude' students. Students should have the right to appeal that their score was dragged down by financial status."
+                },
+                synthesis: {
+                    prob: "A lack of context in data is amplified into a fatal flaw by the model, misguiding teachers via the UI to view financial distress as low intelligence, ultimately leading to policy-driven resource withdrawal. It translates a temporary lack of cash flow into an academic death sentence.",
+                    sol: "By decoupling financial features, explicitly labeling 'financially-driven risk', and mandating automatic referrals to financial aid, AI shifts from a high-tech poverty punisher to a precise social welfare net."
                 },
                 methodology: {
                     formula: "$$ Risk\\ Ratio (RR) = \\frac{P(\\text{Dropout} | \\text{Tuition}=0)}{P(\\text{Dropout} | \\text{Tuition}=1)} $$",
                     process: "Tuition Not Up to Date (Tuition=0): 548 students, 455 dropped out\nP(Dropout|Tuition=0) = 455 / 548 = 0.8303\n\nTuition Up to Date (Tuition=1): 3876 students, 966 dropped out\nP(Dropout|Tuition=1) = 966 / 3876 = 0.2492\n\nRR = 0.8303 / 0.2492 = 3.33",
-                    technique: "Conditional Probability & Relative Risk.\nRationale: Can accurately quantify the leverage amplification effect of a single socioeconomic feature (not paying tuition) on the final negative outcome (dropout).",
-                    metric: "Relative Risk (RR). Meaning: The value 3.33 represents that the state of 'unpaid tuition' causes the risk of a student dropping out to surge to 3.33 times the original. This is an extremely strong proxy variable.",
+                    technique: "Conditional Probability & Relative Risk.\nRationale: Can accurately quantify the leverage amplification effect of a single socioeconomic feature on the final negative outcome.",
+                    metric: "Relative Risk (RR). Meaning: The value 3.33 represents that the state of 'unpaid tuition' causes the risk of a student dropping out to surge to 3.33 times the original.",
                     result: "Unpaid tuition was found to be one of the highest-weighted features in the algorithm. The model isn't learning 'who can't study', it's learning 'whose family is poor'.",
-                    meaning: "AI found a lazy shortcut: 'Just see whose family is too poor to pay tuition, guess they will drop out, and the accuracy is up to 80%'. Consequently, the system will directly label poor students as 'academic failures', punishing poverty with high technology."
+                    meaning: "AI found a lazy shortcut: 'Just see whose family is too poor to pay tuition, guess they will drop out, and accuracy is high'. Consequently, the system punishes poverty with high technology."
                 }
             },
             {
-                id: 'rq3',
-                badge: 'RQ3',
+                id: 'rq3', badge: 'RQ3',
                 title: 'Systemic Discrimination of the "Debtor" Label',
-                theory: 'The "Debtor" feature in the dataset carries a strong socioeconomic stigma. The dropout rate for students with debt (62%) is 2.2 times that of students without debt (28.3%). Feeding this feature into machine learning will cause the model to mistake structural poverty for low individual learning potential.',
+                theory: 'The "Debtor" feature carries a strong socioeconomic stigma. The dropout rate for students with debt (62%) is 2.2 times that of students without debt (28.3%). Feeding this into ML mistakes structural poverty for low individual learning potential.',
                 groupA: { name: 'In Debt (Debtor = 1)', total: 503, count: 312, rate: 62.0, color: 'bg-rose-500', text: 'text-rose-600' },
                 groupB: { name: 'No Debt (Debtor = 0)', total: 3921, count: 1109, rate: 28.3, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 levels: {
-                    l1: "Recorded whether the student has the legal status of a debtor (Debtor=1). But it does not record the social context and nature of the debt (e.g., medical debt, student loans, or inherited family debt).",
-                    l2: "The model uses debt status (dropout risk up to 62%) as a strong feature predicting academic failure. The algorithm, uncalibrated, essentially translates systemic economic and class disadvantages into an academic ability penalty on the individual.",
-                    l3: "Counselors seeing a high-risk score marked red due to 'debt' on the interface are prone to Confirmation Bias. The student's class predicament is made invisible in the system, reduced to a single 'high dropout risk' label.",
-                    l4: "Using this metric directly extends the financial system's credit discrimination to the educational field. It must be explicitly stated that the risk score generated by this feature can only be used for 'support (like issuing emergency relief funds)', and absolutely must not be used for 'exclusion' or elimination accountability."
+                    l1: "Recorded whether the student has the legal status of a debtor. But it does not record the social context and nature of the debt (e.g., medical debt, student loans).",
+                    l2: "The model uses debt status as a strong predictive feature. Uncalibrated, it translates systemic economic and class disadvantages into an academic ability penalty on the individual.",
+                    l3: "Counselors seeing a high-risk score marked red due to 'debt' are prone to Confirmation Bias. The student's class predicament is made invisible in the system.",
+                    l4: "Using this metric directly extends the financial system's credit discrimination to the educational field. It must be explicitly stated that this cannot be used for 'exclusion'."
+                },
+                synthesis: {
+                    prob: "By utilizing external credit blemishes as an algorithmic shortcut and displaying them without policy firewalls, the system triggers confirmation bias in educators. It effectively launders the cruelty of financial markets into an objective-looking 'academic score'.",
+                    sol: "By blinding financial tags at the source, masking spurious correlations, and enacting strict usage bans, we sever the toxic link between financial exploitation and academic evaluation, defending education as a vehicle for social mobility."
                 },
                 methodology: {
                     formula: "$$ Odds\\ Ratio (OR) = \\frac{Odds(\\text{Dropout} | \\text{Debtor}=1)}{Odds(\\text{Dropout} | \\text{Debtor}=0)} $$",
                     process: "Debtor (Debtor=1): 312 dropped out, not dropped out 191\nOdds(Debtor=1) = 312 / 191 = 1.633\n\nNon-Debtor (Debtor=0): 1109 dropped out, not dropped out 2812\nOdds(Debtor=0) = 1109 / 2812 = 0.394\n\nOR = 1.633 / 0.394 = 4.14",
-                    technique: "Odds Ratio.\nRationale: The Odds Ratio is a standard metric in social epidemiology used to measure 'the strength of association between exposure to a certain risk (like debt) and the occurrence of a specific disease (dropout)'.",
-                    metric: "Odds Ratio = 4.14. Meaning: An OR greater than 1 indicates a strong positive correlation. The number 4.14 means that the 'odds' of someone burdened with debt falling into the despair of dropping out are more than 4 times that of an ordinary person.",
-                    result: "Debt is highly tied to academic failure. If an AI model unthinkingly includes it in its feature repository, it is equivalent to implanting a financial credit review inside the algorithm, violating the principle of equal educational opportunity.",
-                    meaning: "If a student incurs debt because a family member is sick, AI won't think they need help, but will ruthlessly calculate: 'Probability of dropping out is 4 times higher, not worth investing resources'. This brings cold-blooded credit scoring straight into the classroom."
+                    technique: "Odds Ratio.\nRationale: Measures the strength of association between exposure to a certain risk (debt) and the occurrence of a specific disease (dropout).",
+                    metric: "Odds Ratio = 4.14. Meaning: The 'odds' of someone burdened with debt falling into the despair of dropping out are more than 4 times that of an ordinary person.",
+                    result: "Debt is highly tied to academic failure. Including it in a feature repository is equivalent to implanting a financial credit review inside the algorithm.",
+                    meaning: "If a student incurs debt because a family member is sick, AI won't think they need help, but will calculate: 'Dropout probability is 4x higher, not worth investing resources'."
                 }
             },
             {
-                id: 'rq4',
-                badge: 'RQ4',
+                id: 'rq4', badge: 'RQ4',
                 title: 'The Resource Umbrella Effect of Scholarships',
-                theory: 'The dropout rate for students with scholarships is only 10.8%, far lower than the 39.1% for those without. This verifies in social science that "financial support can reverse academic failure." Educational AI should be used to allocate scholarships, not to predict failure based on the lack of them.',
+                theory: 'The dropout rate for students with scholarships is only 10.8%, far lower than the 39.1% for those without. Educational AI should be used to allocate scholarships, not to predict failure based on the lack of them.',
                 groupA: { name: 'No Scholarship (Scholarship = 0)', total: 3325, count: 1302, rate: 39.1, color: 'bg-rose-500', text: 'text-rose-600' },
                 groupB: { name: 'Holds Scholarship (Scholarship = 1)', total: 1099, count: 119, rate: 10.8, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 levels: {
-                    l1: "Only recorded the tangible outcome: whether they successfully hold a scholarship. Completely fails to record the huge hidden population of those who 'have financial difficulties and desperately need a grant, but failed to apply due to limited quotas'.",
-                    l2: "The algorithm learns 'no scholarship = high risk (39.1%)'. If resource allocation is optimized based on this, subsequent counseling resources might be reallocated to students who are already safe (with scholarships, dropout rate only 10.8%), creating a data Matthew Effect.",
-                    l3: "Users only see high risk on the interface. If the interface design lacks causal inference prompts (like 'if a scholarship is supplemented, the student's risk will drop significantly'), decision-makers might think the student is a hopeless case and abandon financial intervention.",
-                    l4: "In governance principles, detecting high risk from lacking a scholarship must trigger a 'proactive financial aid assessment'. If the score is inappropriately used as a basis to cancel other qualifications, the student should have the right to demand stopping the system's review."
+                    l1: "Only recorded the tangible outcome (holding a scholarship), failing to record the hidden population of those who 'have financial difficulties but failed to apply due to limited quotas'.",
+                    l2: "The algorithm learns 'no scholarship = high risk'. If resources are optimized based on this, counseling might be reallocated to students who are already safe (Matthew Effect).",
+                    l3: "Users only see high risk on the interface. Without causal inference prompts ('if a scholarship is supplemented, risk drops'), decision-makers might abandon financial intervention.",
+                    l4: "In governance principles, detecting high risk from lacking a scholarship must trigger a 'proactive financial aid assessment', rather than passive observation of failure."
+                },
+                synthesis: {
+                    prob: "Failing to see the underlying funding gap leads to 'rich-get-richer' model attributions. The system becomes a passive bystander forecasting doom, mistaking a reversible financial hardship for an inevitable academic destiny.",
+                    sol: "By utilizing Uplift Modeling to maximize intervention ROI and adding 'What-If' resource simulators to the UI, AI transforms from a passive alarm into an active agent distributing micro-grants to reverse crises."
                 },
                 methodology: {
                     formula: "$$ ARR = P(\\text{Dropout} | \\text{Schol}=0) - P(\\text{Dropout} | \\text{Schol}=1) $$",
                     process: "No Scholarship Group (Schol=0): 1302 / 3325 = 39.16%\nHas Scholarship Group (Schol=1): 119 / 1099 = 10.83%\n\nARR = 39.16% - 10.83% = +28.33%",
-                    technique: "Absolute Risk Reduction (ARR).\nRationale: This is a surrogate indicator for causal inference, used to measure how much risk can be truly erased when we add a certain intervention (like giving a scholarship umbrella) to an individual.",
-                    metric: "Absolute Protective Power (ARR = 28.3%). Meaning: The number represents that the single variable of 'scholarship' can directly offset nearly 30% of the dropout risk.",
-                    result: "Empirical evidence finds that providing financial support can miraculously reverse academic failure. This methodologically proves that 'dropping out' is not an ability issue, but a resource allocation issue.",
-                    meaning: "We proved with real data: 'Giving money can make the dropout rate plummet by nearly 30%'. AI early warning systems shouldn't be used to eliminate people without scholarships, but should act like a radar to find and save kids 'about to drop out because they have no money'."
+                    technique: "Absolute Risk Reduction (ARR).\nRationale: A surrogate indicator for causal inference, used to measure how much risk can be truly erased when we add a certain intervention (scholarship).",
+                    metric: "Absolute Protective Power (ARR = 28.3%). Meaning: The single variable of 'scholarship' can directly offset nearly 30% of the dropout risk.",
+                    result: "Providing financial support can miraculously reverse academic failure. This methodologically proves that 'dropping out' is often a resource allocation issue.",
+                    meaning: "Real data shows: 'Giving money can make the dropout rate plummet by nearly 30%'. AI systems shouldn't eliminate people without scholarships; they should act as a radar to find kids about to drop out due to lack of funds."
                 }
             },
             {
-                id: 'rq5',
-                badge: 'RQ5',
+                id: 'rq5', badge: 'RQ5',
                 title: 'Intersectional Disparate Impact of Gender Prediction',
-                theory: 'The dataset shows a significant gender disparity: the male dropout rate (45%) is significantly higher than that of females (25%). If the AI system does not undergo a debiasing process, the male demographic will encounter systemic Disparate Impact in automated decision-making.',
+                theory: 'The dataset shows a significant gender disparity: male dropout rate (45%) is significantly higher than female (25%). Without debiasing, the male demographic will encounter systemic Disparate Impact in automated decision-making.',
                 groupA: { name: 'Male Students (Gender = 1)', total: 1555, count: 701, rate: 45.1, color: 'bg-rose-500', text: 'text-rose-600' },
                 groupB: { name: 'Female Students (Gender = 0)', total: 2869, count: 720, rate: 25.1, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 levels: {
-                    l1: "Collected a simplified biological sex classification. Completely fails to record the deep social structural factors behind the difference in male and female dropout rates (such as males possibly facing military service pressure or economic pushes to enter the blue-collar labor market early).",
-                    l2: "Because the male dropout rate (45.1%) is statistically significantly higher, if the model is not debiased, it will automatically give males a poorer baseline prediction, leading to the wrongful elimination of individuals with potential (statistical discrimination).",
-                    l3: "If the system interface does not provide Counterfactual Explanations (e.g., 'if this student's gender were female, how would the score change'), users will be unable to perceive that this is actually a gender penalty brought by the algorithm.",
-                    l4: "According to civil rights regulations, using Protected Attributes for high-risk decisions is illegal. Governance bodies must mandate the regular generation of Demographic Parity audit reports; failure to meet standards results in legal accountability."
+                    l1: "Collected a simplified biological sex classification. Completely fails to record the deep social structural factors behind the difference (e.g., military service pressure or early blue-collar labor).",
+                    l2: "Because the male dropout rate is statistically higher, if the model is not debiased, it will automatically give males a poorer baseline prediction (statistical discrimination).",
+                    l3: "If the system interface does not provide Counterfactual Explanations, users will be unable to perceive that this is actually a gender penalty brought by the algorithm.",
+                    l4: "According to civil rights regulations, using Protected Attributes for high-risk decisions is illegal. Governance must mandate regular Demographic Parity audit reports."
+                },
+                synthesis: {
+                    prob: "By using biological sex as a lazy proxy for social structure, the AI seamlessly absorbs historical societal biases and executes illegal statistical discrimination with ruthless, automated efficiency hidden inside a black box.",
+                    sol: "By mandating adversarial debiasing, counterfactual UI transparency, and strict 4/5ths Rule compliance audits, the system is rebuilt into a legally compliant, transparent equity engine with built-in accountability."
                 },
                 methodology: {
                     formula: "$$ DIR = \\frac{P(\\text{Favorable} | \\text{Male})}{P(\\text{Favorable} | \\text{Female})} \\geq 0.8 $$",
                     process: "Define 'Favorable Outcome' = (Total - Dropouts) / Total\nMale (Male=1) Favorable Prob: (1555 - 701) / 1555 = 54.91%\nFemale (Female=0) Favorable Prob: (2869 - 720) / 2869 = 74.90%\n\nDIR = 54.91% / 74.90% = 0.733",
-                    technique: "Disparate Impact Ratio / 4/5ths Rule.\nRationale: This is a legal standard test in US federal employment and civil rights regulations used to determine whether an algorithm causes systemic discrimination against protected attributes (like gender, race).",
-                    metric: "DIR Metric (0.733). Meaning: Legal doctrine dictates this value must not be less than 0.8. The calculated result is 0.733, indicating a severe structural bias in the gender distribution of this dataset; legally, it should not be used directly to train a model.",
-                    result: "Data confirms that because the proportion of male dropouts in the past was high, the algorithm automatically learns the shortcut that 'biological male = penalty', constituting legal 'statistical discrimination'.",
-                    meaning: "According to US civil rights regulations, if an AI discounts your passing probability just because you are a boy, it's illegal! AI cannot collectively punish male students now just because seniors in the past dropped out. Grading must look at personal performance, not gender."
+                    technique: "Disparate Impact Ratio / 4/5ths Rule.\nRationale: A legal standard test in US federal civil rights regulations used to determine whether an algorithm causes systemic discrimination against protected attributes.",
+                    metric: "DIR Metric (0.733). Meaning: Legal doctrine dictates this must not be less than 0.8. The result indicates severe structural bias; legally, it shouldn't be used directly.",
+                    result: "Data confirms that because the proportion of male dropouts in the past was high, the algorithm automatically learns 'biological male = penalty', constituting legal 'statistical discrimination'.",
+                    meaning: "If an AI discounts your passing probability just because you are a boy, it's illegal. AI cannot collectively punish male students now just because seniors in the past dropped out."
                 }
             },
             {
-                id: 'rq6',
-                badge: 'RQ6',
+                id: 'rq6', badge: 'RQ6',
                 title: 'Admission Age and the Risk of Non-Traditional Students',
-                theory: 'As admission age increases (>21 years old non-traditional students), their social responsibilities (like work, family) increase, and the dropout rate spikes. If the model includes age uncalibrated, it is equivalent to punishing adult learners trying to achieve class mobility by returning to campus.',
+                theory: 'As admission age increases (>21 years old non-traditional students), their social responsibilities (like work, family) increase, and the dropout rate spikes. Including age uncalibrated punishes adult learners returning to campus.',
                 groupA: { name: 'Non-Traditional (Age > 21)', total: 1500, count: 850, rate: 56.6, color: 'bg-rose-500', text: 'text-rose-600' }, 
                 groupB: { name: 'Traditional (Age ≤ 21)', total: 2924, count: 571, rate: 19.5, color: 'bg-emerald-500', text: 'text-emerald-600' },
                 levels: {
-                    l1: "Recorded the student's age at the time of enrollment. But it fails to record the heavy network of social responsibilities behind older enrollees (e.g., needing to simultaneously hold a full-time job, raise young children, or care for elderly parents).",
-                    l2: "The model strongly binds older age with a high dropout risk (56.6%) and weights it. The algorithm coldly punishes non-traditional adult learners whose resources are fragmented but who attempt to reverse their class destiny through lifelong learning.",
-                    l3: "The single risk score output by the interface completely obscures the true situation of non-traditional students having 'extremely fragmented study time' rather than 'lacking intellectual ability', causing teachers to form inappropriate preconceived notions.",
-                    l4: "Age should absolutely not be used as a filter to exclude educational opportunities. School governance bodies must establish independent norms and assessment pathways for 'non-traditional students', allowing them to refuse being evaluated by the single algorithmic scoring standard for fresh graduates."
+                    l1: "Recorded the student's age at the time of enrollment. But it fails to record the heavy network of social responsibilities behind older enrollees (e.g., full-time jobs, parenting).",
+                    l2: "The model strongly binds older age with high dropout risk (56.6%). The algorithm coldly punishes non-traditional adult learners trying to reverse their class destiny.",
+                    l3: "The single risk score output by the interface obscures the true situation of non-traditional students having 'extremely fragmented study time' rather than 'lacking intellectual ability'.",
+                    l4: "Age should absolutely not be used as a filter to exclude educational opportunities. Governance bodies must establish independent norms and allow students to opt-out of single algorithmic scoring."
+                },
+                synthesis: {
+                    prob: "A severe misalignment of standards uses the carefree baseline of an 18-year-old to ruthlessly penalize the structural time-poverty of working adults, stripping lifelong learners of educational opportunities.",
+                    sol: "By adopting a 'role load index', deploying sub-population contextual norming, and granting algorithmic opt-out rights, we shatter the tyranny of a 'one-size-fits-all' model and restore procedural justice for adult learners."
                 },
                 methodology: {
                     formula: "$$ \\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i} $$",
-                    process: "Age > 21 Dropout Rate: 56.6% (Expected around population avg 32%)\nAge ≤ 21 Dropout Rate: 19.5%\nObserved distribution (O_i) severely deviates from random expected value (E_i).\nChi-Square p-value < 0.0001, indicating extremely significant group fragmentation.",
-                    technique: "Cross-Tabulation & Subgroup Norming Deviation Test.\nRationale: To prove that 'traditional fresh graduates' and 'working adults returning to campus' are fundamentally two groups with completely different behavioral logics, and should not be forcibly thrown into the same AI standard for assessment.",
-                    metric: "Degree of Group Fragmentation. Meaning: The dropout rate faced by older enrollees is nearly 3 times that of fresh graduates. Using the same line to cut these two groups will cause severe systemic unfairness.",
-                    result: "Non-traditional students have highly fragmented time due to external social responsibilities like working and parenting. This causes a single-threshold predictive model to mark them as a 'hopeless group'.",
-                    meaning: "Imagine a 30-year-old single mother who works during the day and studies at night. If evaluated by the same AI designed for 'carefree 18-year-olds', she'll be condemned. AI cannot use the same ruler to measure everyone when starting lines are fundamentally different."
+                    process: "Age > 21 Dropout Rate: 56.6% (Expected around population avg 32%)\nAge ≤ 21 Dropout Rate: 19.5%\nObserved distribution (O_i) severely deviates from random expected value (E_i).\nChi-Square p-value < 0.0001.",
+                    technique: "Cross-Tabulation & Subgroup Norming Deviation Test.\nRationale: Proves that 'traditional fresh graduates' and 'working adults' have completely different behavioral logics, and should not be forced into the same AI standard.",
+                    metric: "Degree of Group Fragmentation. Meaning: The dropout rate faced by older enrollees is nearly 3 times that of fresh graduates. Using the same line to cut these two groups causes systemic unfairness.",
+                    result: "Non-traditional students have highly fragmented time due to external social responsibilities. A single-threshold predictive model marks them as a 'hopeless group'.",
+                    meaning: "Imagine a 30-year-old single mother who works during the day and studies at night. If evaluated by the same AI designed for 'carefree 18-year-olds', she'll be condemned. AI cannot use the same ruler for everyone."
                 }
             }
         ];
@@ -354,7 +356,7 @@
         });
 
         function selectRQ(id, btnElement) {
-            // Update Active State on Buttons (Light Theme format)
+            // Update Active State
             document.querySelectorAll('#rq-container button').forEach(b => {
                 b.classList.remove('bg-blue-50', 'border-blue-400', 'ring-1', 'ring-blue-200');
                 b.classList.add('bg-white', 'border-slate-200');
@@ -362,18 +364,13 @@
             btnElement.classList.add('bg-blue-50', 'border-blue-400', 'ring-1', 'ring-blue-200');
             btnElement.classList.remove('bg-white', 'border-slate-200');
 
-            // Find Data
             currentRQ = rqDatabase.find(r => r.id === id);
 
-            // Hide Welcome, Show Data
+            // Toggle visibility
             document.getElementById('welcome-state').classList.add('hidden');
             const dataState = document.getElementById('data-state');
             dataState.classList.remove('hidden');
             dataState.classList.add('flex');
-
-            // Reset AI Container
-            document.getElementById('ai-output-container').classList.add('hidden');
-            document.getElementById('ai-output-container').innerHTML = '';
 
             // Populate Content
             document.getElementById('rq-badge').innerText = currentRQ.badge;
@@ -394,13 +391,17 @@
             rateB.className = `text-5xl font-black drop-shadow-sm ${currentRQ.groupB.text}`;
             document.getElementById('group-b-desc').innerText = `${currentRQ.groupB.count} Dropouts / ${currentRQ.groupB.total} Total`;
 
-            // Populate 4-Level Audit Texts
+            // Populate 4-Level Texts
             document.getElementById('level-1-text').innerText = currentRQ.levels.l1;
             document.getElementById('level-2-text').innerText = currentRQ.levels.l2;
             document.getElementById('level-3-text').innerText = currentRQ.levels.l3;
             document.getElementById('level-4-text').innerText = currentRQ.levels.l4;
 
-            // Populate Methodology Section
+            // Populate Synthesis (NEW)
+            document.getElementById('syn-prob').innerText = currentRQ.synthesis.prob;
+            document.getElementById('syn-sol').innerText = currentRQ.synthesis.sol;
+
+            // Populate Methodology
             document.getElementById('meth-formula').innerHTML = currentRQ.methodology.formula;
             document.getElementById('meth-process').innerText = currentRQ.methodology.process;
             document.getElementById('meth-technique').innerText = currentRQ.methodology.technique;
@@ -408,7 +409,7 @@
             document.getElementById('meth-findings').innerText = currentRQ.methodology.result;
             document.getElementById('meth-meaning').innerText = currentRQ.methodology.meaning;
 
-            // Trigger KaTeX to render Math in the methodology section
+            // Render Math
             if (window.renderMathInElement) {
                 renderMathInElement(document.getElementById('methodology-section'), {
                     delimiters: [
@@ -419,7 +420,7 @@
                 });
             }
 
-            // Animate Bars (Small delay to allow render)
+            // Animate Bars
             setTimeout(() => {
                 const barA = document.getElementById('group-a-bar');
                 barA.style.width = currentRQ.groupA.rate + '%';
@@ -429,75 +430,6 @@
                 barB.style.width = currentRQ.groupB.rate + '%';
                 barB.className = `h-4 progress-bar ${currentRQ.groupB.color}`;
             }, 50);
-        }
-
-        // Gemini API Call Logic (Exponential Backoff Implementation)
-        async function fetchGeminiWithBackoff(prompt, systemPrompt) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] }
-            };
-
-            const delays = [1000, 2000, 4000, 8000, 16000];
-            
-            for (let attempt = 0; attempt < 6; attempt++) {
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    
-                    const data = await response.json();
-                    return data.candidates[0].content.parts[0].text;
-                } catch (error) {
-                    if (attempt === 5) throw new Error("API request failed, maximum retries reached.");
-                    await new Promise(r => setTimeout(r, delays[attempt]));
-                }
-            }
-        }
-
-        // Simple Markdown Parser
-        function parseSimpleMarkdown(text) {
-            let html = text.replace(/^### (.*$)/gim, '<h3 class="text-xl font-black text-indigo-900 mt-6 mb-3">$1</h3>')
-                           .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-black text-indigo-900 mt-8 mb-4">$1</h2>')
-                           .replace(/\*\*(.*)\*\*/gim, '<strong class="text-slate-900 font-black">$1</strong>')
-                           .replace(/\*(.*)\*/gim, '<em class="text-slate-600 italic">$1</em>')
-                           .replace(/\n/gim, '<br>');
-            return html;
-        }
-
-        async function generateAIAnalysis(mode) {
-            if (!currentRQ) return;
-
-            const loading = document.getElementById('ai-loading');
-            const outputContainer = document.getElementById('ai-output-container');
-            
-            outputContainer.classList.add('hidden');
-            loading.classList.remove('hidden');
-
-            const systemInstruction = `You are a computational social scientist and civil rights algorithmic auditor. Please answer in English. Do not use Markdown code blocks, output plain text with basic headings directly.`;
-            
-            let prompt = "";
-            if (mode === 'audit') {
-                prompt = `Based on the following real data from the UCI student dropout dataset (N=4424):\nFeature: ${currentRQ.title}\nHigh-risk group data: ${currentRQ.groupA.name} dropout rate is up to ${currentRQ.groupA.rate}%\nLow-risk group data: ${currentRQ.groupB.name} dropout rate is ${currentRQ.groupB.rate}%\n\nPlease write a short 'AI Algorithmic Fairness Audit Report' in under 200 words, sternly pointing out the social class stratification and Disparate Impact that would be caused if this feature is directly fed into a machine learning model, and provide technical calibration recommendations.`;
-            } else {
-                prompt = `Based on the following real data from the UCI student dropout dataset (N=4424):\nFeature impact: ${currentRQ.title}\nHigh-risk group situation: ${currentRQ.groupA.name} dropout rate is up to ${currentRQ.groupA.rate}%\n\nPlease write a micro-qualitative diary entry in under 200 words from a first-person perspective (a university student belonging to the high-risk group). Describe the real-life predicament you are currently facing (corresponding to the feature above), and your inner feelings and sense of powerlessness upon learning that the school's AI early warning system has labeled you as 'highly likely to drop out/fail' because of your background.`;
-            }
-
-            try {
-                const responseText = await fetchGeminiWithBackoff(prompt, systemInstruction);
-                outputContainer.innerHTML = parseSimpleMarkdown(responseText);
-                outputContainer.classList.remove('hidden');
-            } catch (error) {
-                outputContainer.innerHTML = `<div class="text-rose-600 font-bold p-6 bg-rose-50 rounded-xl text-lg">Unable to connect to Gemini API for analysis.<br>Error message: ${error.message}</div>`;
-                outputContainer.classList.remove('hidden');
-            } finally {
-                loading.classList.add('hidden');
-            }
         }
     </script>
 </body>

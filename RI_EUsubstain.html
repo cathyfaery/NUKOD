@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="依據 European Commission 2026 Living Guidelines，互動檢視生成式 AI 在研究中的 substantial use 灰色案例。" />
+<title>Substantial Use｜生成式 AI 研究使用互動判斷尺</title>
+<style>
+  :root{
+    --ink:#1d2733;
+    --muted:#5c6670;
+    --paper:#f7f5f0;
+    --card:#ffffff;
+    --line:#d9d5cc;
+    --navy:#24364a;
+    --navy-soft:#e8edf2;
+    --green:#2f7b4a;
+    --green-bg:#edf6f0;
+    --yellow:#a77d12;
+    --yellow-bg:#fbf6e7;
+    --orange:#b85c1f;
+    --orange-bg:#fbefe6;
+    --red:#963637;
+    --red-bg:#f8eaea;
+    --focus:#174f7c;
+    --shadow:0 8px 24px rgba(31,39,51,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif TC","Songti TC","PMingLiU","Microsoft JhengHei",serif;
+    font-size:18px;
+    line-height:1.75;
+  }
+  button,input{font:inherit}
+  a{color:#174f7c;text-decoration-thickness:1px;text-underline-offset:3px}
+  a:hover{text-decoration-thickness:2px}
+  .wrap{max-width:1440px;margin:0 auto;padding:0 28px 64px}
+  header{
+    border-bottom:1px solid var(--line);
+    padding:54px 0 30px;
+    margin-bottom:28px;
+  }
+  .eyebrow{
+    font-family:"Microsoft JhengHei",sans-serif;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-size:.78rem;
+    font-weight:700;
+  }
+  h1{font-size:clamp(2rem,4vw,3.3rem);line-height:1.18;margin:.3rem 0 .75rem;color:var(--navy);font-weight:800}
+  .subtitle{max-width:1050px;font-size:1.12rem;color:#3d4650;margin:0}
+  .source-strip{
+    display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+    margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:.92rem;color:var(--muted);
+  }
+  .source-strip a{font-family:"Microsoft JhengHei",sans-serif;font-weight:650}
+
+  .notice{
+    background:#fffdf8;border:1px solid #cfc9bb;border-left:5px solid var(--navy);
+    padding:18px 20px;margin:0 0 24px;border-radius:8px;
+  }
+  .notice strong{color:var(--navy)}
+  .notice p{margin:.25rem 0}
+
+  .legend{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0 26px;
+  }
+  .legend-item{background:var(--card);border:1px solid var(--line);padding:15px 16px;border-radius:8px;min-height:100px}
+  .legend-head{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--navy)}
+  .dot{width:16px;height:16px;border-radius:50%;display:inline-block;flex:0 0 16px;border:1px solid rgba(0,0,0,.08)}
+  .dot.green{background:var(--green)} .dot.yellow{background:var(--yellow)} .dot.orange{background:var(--orange)} .dot.red{background:var(--red)}
+  .legend-item p{margin:7px 0 0;color:var(--muted);font-size:.9rem;line-height:1.55}
+
+  .toolbar{
+    display:grid;grid-template-columns:minmax(280px,1fr) auto;gap:16px;align-items:end;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:18px 0;margin-bottom:24px;
+  }
+  .search-wrap label,.filters-title{display:block;font-family:"Microsoft JhengHei",sans-serif;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:7px}
+  .search-wrap input{width:100%;border:1px solid #bbb6ab;border-radius:7px;padding:11px 13px;background:#fff;color:var(--ink);outline:none}
+  .search-wrap input:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(23,79,124,.12)}
+  .filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .filter-btn{
+    border:1px solid #bbb6ab;background:#fff;color:#37414b;border-radius:999px;padding:8px 12px;cursor:pointer;
+    font-family:"Microsoft JhengHei",sans-serif;font-size:.86rem;font-weight:650;
+  }
+  .filter-btn:hover,.filter-btn:focus-visible{border-color:var(--navy);outline:none}
+  .filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(380px,.9fr);gap:28px;align-items:start}
+  .case-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .case-card{
+    width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:16px 16px 15px;cursor:pointer;
+    transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;min-height:132px;color:var(--ink);
+  }
+  .case-card:hover{transform:translateY(-1px);border-color:#a9a398;box-shadow:var(--shadow)}
+  .case-card:focus-visible{outline:3px solid rgba(23,79,124,.25);outline-offset:2px}
+  .case-card.active{border:2px solid var(--navy);padding:15px 15px 14px;box-shadow:var(--shadow)}
+  .case-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+  .case-level{display:flex;align-items:center;gap:8px;font-family:"Microsoft JhengHei",sans-serif;font-size:.77rem;font-weight:800;letter-spacing:.02em}
+  .case-stage{font-family:"Microsoft JhengHei",sans-serif;font-size:.75rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 8px;white-space:nowrap}
+  .case-card h3{font-size:1.04rem;line-height:1.45;margin:.3rem 0 .4rem;color:var(--navy)}
+  .case-card p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.55}
+
+  .detail{
+    position:sticky;top:18px;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;
+  }
+  .detail-head{padding:23px 24px 20px;border-bottom:1px solid var(--line)}
+  .detail-meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:8px}
+  .level-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;font-family:"Microsoft JhengHei",sans-serif;font-size:.82rem;font-weight:800}
+  .level-pill.green{background:var(--green-bg);color:var(--green)}
+  .level-pill.yellow{background:var(--yellow-bg);color:#7d5c08}
+  .level-pill.orange{background:var(--orange-bg);color:#8d4518}
+  .level-pill.red{background:var(--red-bg);color:var(--red)}
+  .evidence-tag{font-family:"Microsoft JhengHei",sans-serif;font-size:.78rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 9px}
+  .detail h2{font-size:1.55rem;line-height:1.35;color:var(--navy);margin:.35rem 0 .45rem}
+  .detail-summary{margin:0;color:#404a55}
+  .detail-body{padding:22px 24px 26px}
+  .section{margin:0 0 22px}
+  .section:last-child{margin-bottom:0}
+  .section h4{font-size:.92rem;font-family:"Microsoft JhengHei",sans-serif;letter-spacing:.04em;color:var(--navy);margin:0 0 8px;padding-bottom:6px;border-bottom:1px solid #ece8df}
+  .section ul{margin:8px 0 0;padding-left:1.25rem}
+  .section li{margin:.25rem 0}
+  blockquote{margin:10px 0 0;padding:14px 16px;background:#f7f8f8;border-left:4px solid #8796a5;color:#2f3943;font-size:.96rem}
+  .quote-note{font-family:"Microsoft JhengHei",sans-serif;color:var(--muted);font-size:.78rem;margin-top:7px}
+  .source-list{margin:8px 0 0;padding:0;list-style:none}
+  .source-list li{padding:8px 0;border-bottom:1px dotted var(--line)}
+  .source-list li:last-child{border-bottom:0}
+  .source-list small{display:block;color:var(--muted);font-family:"Microsoft JhengHei",sans-serif;margin-top:2px}
+  .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .action-btn{border:1px solid #a9a398;background:#fff;border-radius:7px;padding:8px 11px;cursor:pointer;color:var(--navy);font-family:"Microsoft JhengHei",sans-serif;font-size:.82rem;font-weight:700}
+  .action-btn:hover{border-color:var(--navy)}
+
+  .method-box{margin:34px 0 0;padding:24px;border:1px solid var(--line);background:#fff;border-radius:9px}
+  .method-box h2{color:var(--navy);font-size:1.5rem;margin:0 0 8px}
+  .method-box .lead{color:#4c5660;margin:.2rem 0 1rem}
+  .fiveq{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
+  .q{border-top:3px solid var(--navy);background:#f8f8f6;padding:13px 12px;min-height:122px}
+  .q strong{display:block;color:var(--navy);font-family:"Microsoft JhengHei",sans-serif;margin-bottom:5px}
+  .q span{font-size:.86rem;color:#5d6670;line-height:1.55}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:24px;color:var(--muted);font-size:.88rem}
+  footer p{margin:.45rem 0}
+  .apa{padding-left:1.5em;text-indent:-1.5em}
+  .empty{display:none;border:1px dashed #aaa49a;padding:30px;text-align:center;color:var(--muted);background:#fff;grid-column:1/-1}
+
+  @media (max-width:1080px){
+    .layout{grid-template-columns:1fr}
+    .detail{position:relative;top:auto}
+    .fiveq{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:760px){
+    body{font-size:17px}
+    .wrap{padding:0 18px 45px}
+    header{padding-top:34px}
+    .legend{grid-template-columns:1fr 1fr}
+    .toolbar{grid-template-columns:1fr}
+    .filter-row{justify-content:flex-start}
+    .case-list{grid-template-columns:1fr}
+    .fiveq{grid-template-columns:1fr}
+  }
+  @media (max-width:480px){.legend{grid-template-columns:1fr}}
+  @media print{
+    body{background:#fff;font-size:12pt}
+    .toolbar,.action-row{display:none!important}
+    .layout{display:block}
+    .case-list{grid-template-columns:repeat(2,1fr);page-break-after:always}
+    .detail{position:static;box-shadow:none;margin-top:24px}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Research Integrity · EU 2026 · Interactive Reading Tool</div>
+    <h1>Substantial Use：生成式 AI 研究使用互動判斷尺</h1>
+    <p class="subtitle">以 European Commission（2026）第三版 <em>Living guidelines on the responsible use of generative AI in research</em> 為依據，將研究實務中的灰色案例整理為可點選、可比較的判斷頁面。</p>
+    <div class="source-strip">
+      <span>核心來源：European Commission, Directorate-General for Research and Innovation, May 2026, Third edition</span>
+      <a href="https://research-and-innovation.ec.europa.eu/document/download/2b6cf7e5-36ac-41cb-aab5-0d32050143dc_en?filename=ec_rtd_ai-guidelines.pdf" target="_blank" rel="noopener">官方 PDF ↗</a>
+      <a href="https://research-and-innovation.ec.europa.eu/news/all-research-and-innovation-news/updated-era-living-guidelines-responsible-use-generative-ai-research-2026-05-08_en" target="_blank" rel="noopener">European Commission 更新說明 ↗</a>
+    </div>
+  </header>
+
+  <section class="notice" aria-label="重要說明">
+    <p><strong>重要：</strong>下列綠、黃、橘、紅四級與案例判斷，是依 EU 2026 文件中的 <em>substantial use</em>、<em>meaningfully shapes results</em>、註腳 21 與註腳 28 所做的<strong>分析性操作化</strong>，並非歐盟官方風險分級。</p>
+    <p>橘色代表「很可能屬 substantial use，宜提高揭露、查證與方法責任」；紅色限於<strong>敏感的受託評價情境</strong>，對應 EU 的「refrain from substantially using」原則，不能簡化為「所有 AI 使用均禁止」。</p>
+  </section>
+
+  <section class="legend" aria-label="Substantiality 圖例">
+    <div class="legend-item"><div class="legend-head"><span class="dot green"></span>綠｜通常非 substantial</div><p>多屬 basic editorial / peripheral support，通常不改變研究的核心知識形成。</p></div>
+    <div class="legend-item"><div class="legend-head"><span class="dot yellow"></span>黃｜視情境而定</div><p>AI 提供資訊、程序或局部理解；是否 substantial 取決於後續依賴與決策影響。</p></div>
+    <div class="legend-item"><div class="legend-head"><span class="dot orange"></span>橘｜很可能 substantial</div><p>AI 已介入文獻綜整、研究問題、方法、分析或詮釋，原則上宜揭露並加強驗證。</p></div>
+    <div class="legend-item"><div class="legend-head"><span class="dot red"></span>紅｜敏感且 substantial</div><p>涉及 peer review、proposal evaluation 等對他人產生重大影響的受託學術判斷。</p></div>
+  </section>
+
+  <section class="toolbar" aria-label="篩選工具">
+    <div class="search-wrap">
+      <label for="search">搜尋案例或關鍵字</label>
+      <input id="search" type="search" placeholder="例如：literature review、翻譯、coding、peer review…" autocomplete="off" />
+    </div>
+    <div>
+      <span class="filters-title">依 substantiality 篩選</span>
+      <div class="filter-row" id="filterRow">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="green"><span class="dot green" style="width:10px;height:10px;vertical-align:middle;margin-right:5px"></span>綠</button>
+        <button class="filter-btn" data-filter="yellow"><span class="dot yellow" style="width:10px;height:10px;vertical-align:middle;margin-right:5px"></span>黃</button>
+        <button class="filter-btn" data-filter="orange"><span class="dot orange" style="width:10px;height:10px;vertical-align:middle;margin-right:5px"></span>橘</button>
+        <button class="filter-btn" data-filter="red"><span class="dot red" style="width:10px;height:10px;vertical-align:middle;margin-right:5px"></span>紅</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section>
+      <div id="caseList" class="case-list" aria-label="AI 使用案例"></div>
+      <div id="empty" class="empty">沒有符合目前篩選條件的案例。</div>
+    </section>
+
+    <aside id="detail" class="detail" aria-live="polite" aria-label="案例詳細判斷">
+      <div class="detail-head">
+        <div class="detail-meta">
+          <span id="detailLevel" class="level-pill green"></span>
+          <span id="detailEvidence" class="evidence-tag"></span>
+        </div>
+        <h2 id="detailTitle"></h2>
+        <p id="detailSummary" class="detail-summary"></p>
+      </div>
+      <div class="detail-body">
+        <section class="section">
+          <h4>判斷重點</h4>
+          <ul id="detailPoints"></ul>
+        </section>
+        <section class="section">
+          <h4>EU 原文依據</h4>
+          <blockquote id="detailQuote"></blockquote>
+          <div id="detailQuoteNote" class="quote-note"></div>
+        </section>
+        <section class="section">
+          <h4>出處與來源</h4>
+          <ul id="detailSources" class="source-list"></ul>
+        </section>
+        <section class="section">
+          <h4>判讀備註</h4>
+          <p id="detailNote"></p>
+          <div class="action-row">
+            <button id="copyLink" class="action-btn">複製此案例連結</button>
+            <a class="action-btn" href="https://research-and-innovation.ec.europa.eu/document/download/2b6cf7e5-36ac-41cb-aab5-0d32050143dc_en?filename=ec_rtd_ai-guidelines.pdf" target="_blank" rel="noopener">開啟 EU 原文 PDF</a>
+          </div>
+        </section>
+      </div>
+    </aside>
+  </main>
+
+  <section class="method-box">
+    <h2>遇到新灰色情境時，可再用「Substantiality 五問」判讀</h2>
+    <p class="lead">以下五問是依 EU 的 <em>meaningfully shapes results</em>、最終責任與 substantial-use examples 所做的操作化；它是本頁的分析工具，並非 EU 官方 checklist。</p>
+    <div class="fiveq">
+      <div class="q"><strong>1. 反事實性</strong><span>若沒有 AI 介入，研究是否仍大致會形成相同的內容與方向？</span></div>
+      <div class="q"><strong>2. 核心性</strong><span>AI 是否執行了本來應由研究者展現的核心學術或認知工作？</span></div>
+      <div class="q"><strong>3. 依賴性</strong><span>研究者能否不依賴 AI 原答案，獨立重建、驗證並辯護該判斷？</span></div>
+      <div class="q"><strong>4. 決策性</strong><span>AI output 是否改變研究問題、資料處理、方法、分析、解釋或結論？</span></div>
+      <div class="q"><strong>5. 可見性</strong><span>若不揭露 AI 介入，讀者是否會誤解這項研究實際如何形成？</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>引用建議（APA）：</strong></p>
+    <p class="apa">European Commission, Directorate-General for Research and Innovation. (2026). <em>Living guidelines on the responsible use of generative AI in research</em> (3rd ed.). European Commission.</p>
+    <p>本互動頁將 EU 文件中的直接舉例與本頁的分析性延伸分開標示，避免把分析推論誤認為 European Commission 的正式分級或逐案裁決。</p>
+  </footer>
+</div>
+
+<script>
+const PDF_URL = "https://research-and-innovation.ec.europa.eu/document/download/2b6cf7e5-36ac-41cb-aab5-0d32050143dc_en?filename=ec_rtd_ai-guidelines.pdf";
+const NEWS_URL = "https://research-and-innovation.ec.europa.eu/news/all-research-and-innovation-news/updated-era-living-guidelines-responsible-use-generative-ai-research-2026-05-08_en";
+
+const cases = [
+  {
+    id:"grammar", title:"Grammar / spelling：修正文法與拼字", stage:"寫作表達", level:"green", levelText:"綠｜通常非 substantial", evidence:"EU 直接舉例",
+    teaser:"原稿、論點與研究判斷均由研究者形成，AI 僅做基本編修。",
+    summary:"若 AI 僅改善既有文字的文法、拼字、標點與基本語句，且不改變學術主張，最接近 EU 所稱的 basic editorial support。",
+    points:["研究問題、證據、方法、推論與結論均已由研究者形成。","AI 沒有替研究者新增 conceptual claim 或 scholarly reasoning。","若編修同時重構論證或補出新主張，應改按較高 substantiality 判斷。"],
+    quote:"“using generative AI as a basic editorial support tool is not a substantial use.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"Researchers recommendation #2：substantial use 的例示",url:PDF_URL}],
+    note:"此案例屬 EU 少數明確標示為 non-substantial 的例子之一。"
+  },
+  {
+    id:"translation", title:"忠實翻譯：中文稿翻成英文", stage:"寫作表達", level:"yellow", levelText:"黃｜視情境而定", evidence:"依 EU 原則推論",
+    teaser:"若僅忠實翻譯，接近語言輔助；若同時強化論證，可能跨入 substantive contribution。",
+    summary:"EU 將 drafting / translating 列為需要反思的文字工作，但沒有直接把翻譯定為 substantial 或 non-substantial；因此須看 AI 是否只換語言，或同時改變研究內容。",
+    points:["忠實翻譯而不新增論點：較接近 peripheral language support。","若要求『強化 theoretical argument』、『補出學術意涵』，AI 已開始參與研究形成。","判斷重點在 conceptual change，不在翻譯字數。"],
+    quote:"“summarising papers, brainstorming or exploring ideas, drafting or translating”",
+    quoteNote:"European Commission (2026), p. 4（PDF 頁碼標示為 p. 4；文件 Introduction）。",
+    sources:[{label:"Living Guidelines, Introduction, p. 4",meta:"列出研究文字工作中需要反思的 GenAI 使用",url:PDF_URL}],
+    note:"EU 未直接裁定『翻譯』的 substantiality；本頁採情境式判斷。"
+  },
+  {
+    id:"title", title:"幫論文取標題", stage:"寫作表達", level:"green", levelText:"綠｜通常非 substantial", evidence:"依 EU 原則推論",
+    teaser:"研究已完成，AI 僅提出不同 title 候選，通常不改變研究實質。",
+    summary:"若 AI 只將已完成研究重新命名，通常很難說它 meaningfully shapes results；但若標題建議反過來改寫研究 framing，則需重新判定。",
+    points:["通常不改變 data、method、analysis 或 interpretation。","若 title suggestion 引導研究者改變核心 claim，substantiality 會上升。","仍應遵守期刊或機構對 AI-assisted writing 的個別規範。"],
+    quote:"“When generative AI meaningfully shapes results, researchers transparently note its use…”",
+    quoteNote:"European Commission (2026), p. 8, Researchers recommendation #2.",
+    sources:[{label:"Living Guidelines, p. 8",meta:"以 meaningfully shapes results 作為透明揭露的重要門檻",url:PDF_URL}],
+    note:"EU 沒有列『取標題』案例；此處依是否實質改變研究形成作分析。"
+  },
+  {
+    id:"brainstorm", title:"Brainstorming：產生十個研究題目", stage:"研究構想", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 提到此用途；分級為分析推論",
+    teaser:"作為發散刺激可較低；若直接選一題成為研究方向，會接近 formulating research aims。",
+    summary:"Brainstorming 本身不必然 substantial。關鍵是 AI 的提議是否真正決定後續研究方向。",
+    points:["只作發散、反例或批判刺激：較低。","AI 提題 → 研究者未經獨立文獻與理論判斷即採用：較高。","若 AI 最終決定研究 aims，EU 已明示該類工作可能有 substantial impact。"],
+    quote:"“identifying research gaps, formulating research aims, developing hypotheses, etc. could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"研究 aim / hypothesis 屬可能 substantial impact 的例子",url:PDF_URL}],
+    note:"Brainstorming 是否 substantial，取決於它最後是否存活成研究的核心方向。"
+  },
+  {
+    id:"research-gap", title:"AI 幫忙找 research gap", stage:"文獻與構想", level:"orange", levelText:"橘｜很可能 substantial", evidence:"EU 直接舉例",
+    teaser:"Research gap 會決定研究問題與知識定位，EU 直接列為可能具有 substantial impact。",
+    summary:"若 AI 直接從文獻或摘要中辨識 gap，而研究者據此形成研究問題，AI 已進入知識形成的核心環節。",
+    points:["gap 決定研究『為何需要做』與 novelty positioning。","即使 AI 只產生少量文字，也可能對整篇研究造成高因果影響。","宜揭露工具、版本、用途，並由研究者以原始文獻獨立驗證。"],
+    quote:"“identifying research gaps … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"EU 直接列出 identifying research gaps",url:PDF_URL}],
+    note:"這也是理解 substantiality『不等於使用量』的典型案例。"
+  },
+  {
+    id:"keywords", title:"找關鍵字與背景搜尋詞", stage:"文獻搜尋", level:"yellow", levelText:"黃｜視情境而定", evidence:"依 EU review 例示推論",
+    teaser:"通常屬資訊輔助；若 AI 開始替研究者決定整個 corpus，影響會上升。",
+    summary:"AI 提供 keywords、同義詞或背景搜尋策略通常偏輔助，但若研究者只依 AI 的 search framing 建立文獻母體，則可能實質影響 review。",
+    points:["只提供 search terms：通常接近 background support。","若 AI 的詞彙選擇造成系統性漏文獻，會影響 reliability。","應保留人工擴充、資料庫策略與搜尋式設計。"],
+    quote:"“using generative AI to search background info for a review … is not a substantial use”",
+    quoteNote:"European Commission (2026), p. 9, footnote 28（情境為 review）。",
+    sources:[{label:"Living Guidelines, p. 9, footnote 28",meta:"EU 在 review 情境區分 background info 與 substantive evaluation",url:PDF_URL}],
+    note:"這條原文是在 peer-review 情境；本頁僅用來說明『背景資訊輔助』的性質。"
+  },
+  {
+    id:"select-literature", title:"AI 幫我選『最重要的 30 篇』文獻", stage:"文獻搜尋", level:"yellow", levelText:"黃｜視情境而定", evidence:"依 EU 原則推論",
+    teaser:"AI 開始影響哪些知識進入 corpus；若研究者高度依賴其篩選，會接近 substantial literature review。",
+    summary:"文獻篩選本身會塑造研究者看見的知識世界。AI 若只是候選推薦，較低；若替代研究者或系統性 protocol 決定 corpus，則 substantiality 上升。",
+    points:["注意 training / retrieval bias 導致的文獻版圖偏誤。","研究者應自行界定 inclusion / exclusion criteria。","若 AI 已承擔 literature review 的核心篩選步驟，宜視為 substantial method use。"],
+    quote:"“carrying out a literature review … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"EU 將 carrying out a literature review 列為可能 substantial",url:PDF_URL}],
+    note:"EU 沒有針對『選 30 篇』逐案裁定；本頁依其對 literature review 的定位推論。"
+  },
+  {
+    id:"summary-read-original", title:"AI 摘要單篇文獻；研究者再讀原文", stage:"文獻閱讀", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 風險說明＋分析推論",
+    teaser:"可作 pre-reading aid，但 AI summary 仍需以原文核對。",
+    summary:"若研究者最後真正閱讀與引用原文，AI 可較像前置理解工具；但 EU 明確提醒，即使 citation 真的存在，AI-generated summary 仍可能錯誤。",
+    points:["摘要不可取代對關鍵證據的原文查讀。","若 summary 只作導航，依賴性較低。","若研究結論實際由 summary 而非原文形成，應提高 substantiality。"],
+    quote:"“Even when the citations are correct … the AI-generated summary of those papers may be incorrect.”",
+    quoteNote:"European Commission (2026), pp. 7–8, box on model limitations.",
+    sources:[{label:"Living Guidelines, pp. 7–8",meta:"Invented citations and incorrect summaries",url:PDF_URL}],
+    note:"此案例的黃級建立在『仍由研究者讀原文並自行形成理解』的前提。"
+  },
+  {
+    id:"summary-only", title:"只讀 AI summary，不讀原文", stage:"文獻閱讀", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU 風險與責任原則推論",
+    teaser:"若 summary 成為研究者理解文獻的主要來源，AI 已高度介入 knowledge formation。",
+    summary:"EU 沒有明文把『只讀 summary』列為 substantial，但其對 incorrect summaries、verification 與 ultimate responsibility 的要求，使高度依賴 summary 的做法具有明顯研究誠信風險。",
+    points:["存在 citation 不代表 AI 對其研究結論的摘要正確。","研究者若無法回到原文驗證，就難以對引用內容負最終責任。","當 summary 直接支持 hypothesis、theory 或 critical claim，影響尤其重大。"],
+    quote:"“researchers are responsible for checking all the references and content of the citations and the summaries.”",
+    quoteNote:"European Commission (2026), p. 8.",
+    sources:[{label:"Living Guidelines, p. 8",meta:"研究者須查核 references、citations content 與 summaries",url:PDF_URL}],
+    note:"橘級為依 EU 責任與查證要求作的分析性判斷，並非 EU 對此情境的逐案標示。"
+  },
+  {
+    id:"literature-review", title:"AI 實質完成 literature review", stage:"文獻綜整", level:"orange", levelText:"橘｜很可能 substantial", evidence:"EU 直接舉例",
+    teaser:"EU 直接將 carrying out a literature review 列為可能造成 substantial impact。",
+    summary:"當 AI 不只協助搜尋，而是負責檢索、篩選、摘要、綜整或形成 review 結論時，已明顯進入研究方法與知識形成。",
+    points:["宜揭露 tool、version、date、how used、how affected research process。","需要處理 stochasticity、reproducibility、bias 與 verification。","若可行，保留 prompts / outputs 及可重現的 protocol。"],
+    quote:"“carrying out a literature review … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnotes 21–22",meta:"substantial use 與透明揭露內容",url:PDF_URL}],
+    note:"此情境不是被 EU 宣告禁止；重點是 substantial use 必須被透明、驗證與負責任地治理。"
+  },
+  {
+    id:"rq", title:"AI 直接形成 research aim / RQ", stage:"研究構想", level:"orange", levelText:"橘｜很可能 substantial", evidence:"EU 直接舉例（research aims）",
+    teaser:"研究問題決定研究方向；EU 直接將 formulating research aims 列入可能 substantial impact。",
+    summary:"AI 若從研究背景直接提出並塑造研究 aim / question，通常會實質影響後續 method、data 與 analysis。",
+    points:["研究 aim 是 research lifecycle 前端的核心判斷。","即使 researcher 最後自行潤飾 wording，仍需看 conceptual structure 從哪裡形成。","宜以獨立文獻、理論與可辯護理由重新驗證。"],
+    quote:"“formulating research aims … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"EU 直接列出 formulating research aims",url:PDF_URL}],
+    note:"RQ 並非 footnote 21 的逐字用語；本頁將其視為 research aim / design 中高度相近的核心工作。"
+  },
+  {
+    id:"hypotheses", title:"AI 幫忙發展 hypotheses", stage:"理論與假說", level:"orange", levelText:"橘｜很可能 substantial", evidence:"EU 直接舉例",
+    teaser:"EU 明列 developing hypotheses 可能具有 substantial impact。",
+    summary:"若 AI 產生 variable relations、mediator / moderator 或假說方向，AI 已實質參與研究者的理論推理。",
+    points:["只做 adversarial critique 與直接生成假說要分開。","研究者需能獨立說明每一假說的理論來源與因果邏輯。","最後『自己選』並不自動抹除 AI 的 substantive contribution。"],
+    quote:"“developing hypotheses … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"EU 直接列出 developing hypotheses",url:PDF_URL}],
+    note:"若 AI 只挑戰研究者已自行形成的 hypotheses，substantiality 可低於直接生成。"
+  },
+  {
+    id:"method-advice", title:"AI 建議研究方法或模型", stage:"方法設計", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU method / results 原則推論",
+    teaser:"若 AI 決定 methodology，會直接影響研究可靠性與結論。",
+    summary:"EU 明示使用 GenAI as a method 可能具 substantial impact。若研究者不理解 alternatives 而直接採用 AI 建議，屬核心方法判斷的代理。",
+    points:["工具提供方法清單 ≠ 工具替研究者決定方法。","研究者需能用研究問題、資料特性與方法文獻獨立辯護。","方法選擇若直接影響結果，透明與 robustness 要求更高。"],
+    quote:"“using generative AI as a method or source … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"GenAI as a method or source",url:PDF_URL}],
+    note:"EU 沒有列出『SEM vs regression』等具體案例；本頁依 method use 進行操作化。"
+  },
+  {
+    id:"write-code", title:"AI 把已決定的分析轉成 R / Python code", stage:"資料分析", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 正面用途＋分析推論",
+    teaser:"若研究者已決定模型且能理解 code，AI 較像 implementation assistant。",
+    summary:"EU Introduction 將 helping to write code to analyse data 列為正面使用例之一。是否 substantial 取決於 AI 是實作既定方法，或連方法選擇與分析邏輯一起決定。",
+    points:["人先決定 model、variables、assumptions：較低。","AI 自行決定 cleaning、model specification、outlier rule：較高。","研究者仍需測試 code、檢查輸出與方法一致性。"],
+    quote:"“helping to write code to analyse data”",
+    quoteNote:"European Commission (2026), p. 3, Introduction（positive examples）。",
+    sources:[{label:"Living Guidelines, p. 3",meta:"研究者使用 GenAI 的 positive examples",url:PDF_URL}],
+    note:"『AI 寫 code』本身不足以判定 substantiality；要看誰做方法決策。"
+  },
+  {
+    id:"ai-chooses-analysis", title:"AI 自己選 model、清資料再跑分析", stage:"資料分析", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU method / interpretation 原則推論",
+    teaser:"AI 已穿透 method → data handling → analysis，對結果具有直接決策影響。",
+    summary:"若研究者把資料交給 AI，讓其自行決定模型、變數、outlier 與分析路徑，AI 已成為研究方法與結果形成的主動參與者。",
+    points:["高風險點不是『自動化』本身，而是研究者是否失去可辯護的 method choice。","需有 cross-validation、robustness 與完整紀錄。","研究者仍對所有 AI-assisted output 負最終責任。"],
+    quote:"“Interpretability … underscores the importance of cross validation, especially in automated data analysis…”",
+    quoteNote:"European Commission (2026), p. 8.",
+    sources:[{label:"Living Guidelines, p. 8",meta:"black-box interpretability 與 automated data analysis 的 cross-validation",url:PDF_URL}],
+    note:"此案例為 EU 風險說明的直接操作化。"
+  },
+  {
+    id:"interpret-results", title:"AI 解讀統計結果／形成 theoretical meaning", stage:"結果詮釋", level:"orange", levelText:"橘｜很可能 substantial", evidence:"EU 直接舉例",
+    teaser:"EU 明列 interpreting data analysis 可能造成 substantial impact。",
+    summary:"從 coefficient、p value 或 model output 走到 scientific meaning，是研究核心的 scholarly interpretation；AI 若主導該步驟，通常屬 substantial use。",
+    points:["計算結果與其學術意義要區分。","研究者需能提出 alternative explanations 與 boundary conditions。","若 AI 的解釋直接進入 discussion / conclusion，透明要求更高。"],
+    quote:"“interpreting data analysis … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"EU 直接列出 interpreting data analysis",url:PDF_URL}],
+    note:"這是 EU 對『AI 不只算，也開始解釋』所畫出的重要界線。"
+  },
+  {
+    id:"qual-coding", title:"AI 進行 qualitative coding；研究者逐筆覆核", stage:"質性分析", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU method 原則推論",
+    teaser:"人工覆核能提高 reliability，但不會使 AI 作為方法的一部分消失。",
+    summary:"若 LLM 實際對訪談、文本或開放題進行 coding，它已進入 analytic method。研究者逐筆覆核是良好治理措施，但 AI contribution 仍可能 substantial。",
+    points:["覆核 ≠ non-substantial；它是治理 substantial use 的方式。","需說明 coding prompt、模型、版本、validation strategy。","若資料敏感，還要另行處理 privacy / confidentiality；substantiality 不能代替資料治理判斷。"],
+    quote:"“using generative AI as a method … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnotes 21–22",meta:"method use、透明揭露與可重現紀錄",url:PDF_URL}],
+    note:"EU 沒有直接舉 qualitative coding；本頁依『GenAI as a method』推論。"
+  },
+  {
+    id:"themes", title:"AI 自動形成 themes；研究者再改名稱", stage:"質性分析", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU method / interpretation 原則推論",
+    teaser:"若 theme construction 主要由 AI 完成，研究核心 pattern interpretation 已由 AI 形成。",
+    summary:"只改 theme 名稱不會自動讓 AI 的 substantive contribution 消失；要看最終的 analytic architecture 是否仍源於 AI。",
+    points:["theme identification 通常是 qualitative interpretation 的核心工作。","修改文字比例不是 substantiality 的好指標。","若研究者重做 coding、比較 competing themes 並獨立重構，substantiality 才可能下降。"],
+    quote:"“interpreting data analysis … could have a substantial impact.”",
+    quoteNote:"European Commission (2026), p. 8, footnote 21.",
+    sources:[{label:"Living Guidelines, p. 8, footnote 21",meta:"analysis interpretation 的 substantial impact",url:PDF_URL}],
+    note:"EU 沒有逐字談 themes；此處依 interpretation / method 的治理邏輯分析。"
+  },
+  {
+    id:"second-coder", title:"研究者先 coding；AI 作 second coder", stage:"質性分析", level:"yellow", levelText:"黃｜視情境而定", evidence:"依 EU verification / method 原則推論",
+    teaser:"AI 仍是方法的一部分，但若人先獨立分析，AI 可轉為 validation mechanism。",
+    summary:"這種設計比『AI 先形成 themes、人再確認』保留更多 human agency；是否 substantial 取決於 AI disagreement 最後如何影響 final coding。",
+    points:["人先獨立完成 initial coding，可降低 anchoring。","AI 的 role、agreement rule、disagreement resolution 應寫入方法。","若 final themes 仍主要依 AI 重構，則需提高到橘級。"],
+    quote:"“This transparency principle also applies to the use of AI to detect or screen bad practices … while keeping human supervision.”",
+    quoteNote:"European Commission (2026), p. 8（此原文談 AI screening；本頁類比其『AI 作輔助驗證仍需透明與人類監督』）。",
+    sources:[{label:"Living Guidelines, p. 8",meta:"AI 用於 screening / detection 仍要求 transparency + human supervision",url:PDF_URL}],
+    note:"Second coder 不在 EU 原例中；黃級是依其 verification 與 human supervision 精神所作的實務延伸。"
+  },
+  {
+    id:"results-writing", title:"把既定統計表轉成 Results 描述文字", stage:"研究寫作", level:"yellow", levelText:"黃｜視情境而定", evidence:"依 EU editorial / shaping results 原則推論",
+    teaser:"若只忠實描述既定數字，較低；若由 AI 選擇『哪些發現重要』，會升高。",
+    summary:"Results wording 可以接近 report assistance，但 selection、emphasis 與 interpretation 會讓 AI 開始 meaningfully shape what readers understand as the main result。",
+    points:["只轉成 APA reporting sentence：較接近表達輔助。","AI 決定哪些結果值得報、哪些略去：屬 substantive selection。","研究者需確認數字、方向、顯著性與敘述完全一致。"],
+    quote:"“When generative AI meaningfully shapes results, researchers transparently note its use…”",
+    quoteNote:"European Commission (2026), p. 8.",
+    sources:[{label:"Living Guidelines, p. 8",meta:"meaningfully shapes results 與透明揭露",url:PDF_URL}],
+    note:"EU 未逐案討論 Results drafting；本頁按『描述』與『詮釋／選擇』分界。"
+  },
+  {
+    id:"discussion", title:"AI 起草 Discussion / theoretical implications", stage:"研究寫作", level:"orange", levelText:"橘｜很可能 substantial", evidence:"依 EU interpretation 原則推論",
+    teaser:"Discussion 通常承載 interpretation、theory connection、contribution 與 implication。",
+    summary:"AI 若先形成 Discussion 的主要 reasoning，即使研究者之後大量改字，仍需看最終 intellectual architecture 是否源於 AI。",
+    points:["改字比例 ≠ substantive contribution 比例。","AI 生成的 theoretical claim 需回到原始文獻與結果驗證。","若 AI 只是挑戰既有 Discussion 或提供 counterarguments，可低於直接代擬。"],
+    quote:"“Researchers are accountable for the integrity of the content they produce generated by or with the support of AI tools.”",
+    quoteNote:"European Commission (2026), p. 7, Researchers recommendation #1.",
+    sources:[{label:"Living Guidelines, pp. 7–8",meta:"ultimate responsibility + substantial impact of interpreting analysis",url:PDF_URL}],
+    note:"EU 沒有把 Discussion drafting 列為一個獨立例子；橘級依 scholarly interpretation 與 ultimate responsibility 推論。"
+  },
+  {
+    id:"peer-background", title:"Peer review：用 AI 查背景資訊", stage:"同儕審查", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 直接舉例",
+    teaser:"EU 明示：在 review 情境中，使用 GenAI 搜尋背景資訊可不屬 substantial use。",
+    summary:"AI 若只補充 reviewer 需要的外部 background knowledge，而未讀取或評價受審稿件的核心內容，EU 將其列為 non-substantial 的例子。",
+    points:["仍需遵守期刊對 AI use 的具體規則。","不可因此把 confidential manuscript 上傳外部 AI。","背景搜尋與 manuscript evaluation 必須區分。"],
+    quote:"“using generative AI to search background info for a review … is not a substantial use”",
+    quoteNote:"European Commission (2026), p. 9, footnote 28.",
+    sources:[{label:"Living Guidelines, p. 9, footnote 28",meta:"peer review 中 non-substantial / substantial 的界線",url:PDF_URL}],
+    note:"即便本身 non-substantial，confidentiality 仍是另一條獨立判斷軸。"
+  },
+  {
+    id:"peer-concept", title:"Peer review：局部理解一個陌生概念", stage:"同儕審查", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 直接舉例",
+    teaser:"EU 明示：punctually understanding some ideas / concepts 可不屬 substantial use。",
+    summary:"AI 若只協助 reviewer 理解一個局部概念，而不代理其閱讀與評價整篇稿件，EU 認為可與 substantial review work 區分。",
+    points:["局部概念理解 ≠ 理解整篇 manuscript main elements。","不要把 unpublished manuscript 本身輸入外部 AI。","最後 scientific evaluation 仍需 reviewer 獨立完成。"],
+    quote:"“using it to better understand punctually some ideas or concepts is not a substantial use”",
+    quoteNote:"European Commission (2026), p. 9, footnote 28.",
+    sources:[{label:"Living Guidelines, p. 9, footnote 28",meta:"punctual concepts vs main elements of a paper",url:PDF_URL}],
+    note:"此處最能看出 substantiality 與角色責任有關。"
+  },
+  {
+    id:"peer-main-elements", title:"Peer review：讓 AI 幫忙理解稿件主要內容", stage:"同儕審查", level:"red", levelText:"紅｜敏感且 substantial", evidence:"EU 直接舉例",
+    teaser:"EU 將 helping to understand the main elements of a paper 列為 substantial review use。",
+    summary:"Reviewer 的核心受託工作就是閱讀、理解與評價稿件；若 AI 代行『理解主要內容』，已進入受託學術判斷的核心。",
+    points:["這裡的紅級同時結合 substantiality 與 sensitive activity。","可能牽涉 unpublished work 的 confidentiality / IP。","EU recommendation #6 要求對這類敏感活動避免 substantial use。"],
+    quote:"“helping to understand the main elements of a paper … is a substantial use.”",
+    quoteNote:"European Commission (2026), p. 9, footnote 28.",
+    sources:[{label:"Living Guidelines, p. 9, recommendation #6 & footnote 28",meta:"Sensitive activities：peer review",url:PDF_URL}],
+    note:"紅色表示『敏感情境中的 substantial use 應避免』，不表示 reviewer 的任何 AI 接觸都一律禁止。"
+  },
+  {
+    id:"peer-draft", title:"Peer review：讓 AI 代擬 review report", stage:"同儕審查", level:"red", levelText:"紅｜敏感且 substantial", evidence:"EU 直接舉例",
+    teaser:"EU 直接將 drafting peer review report 列為 substantial use。",
+    summary:"代擬 review report 會把 reviewer 的評價、理由呈現與可能的推薦意見交給 AI，且通常涉及未公開研究內容。",
+    points:["涉及 fairness、bias、hallucination 與 confidential manuscript exposure。","reviewer 仍對評價與文字內容負責，但 EU 更進一步建議在敏感活動中避免 substantial use。","用 AI 查一般背景資料與代擬評審意見，規範性質不同。"],
+    quote:"“drafting peer review report … is a substantial use.”",
+    quoteNote:"European Commission (2026), p. 9, footnote 28.",
+    sources:[{label:"Living Guidelines, p. 9, recommendation #6 & footnote 28",meta:"drafting peer review report",url:PDF_URL}],
+    note:"此案例是文件中最直接的敏感情境界線之一。"
+  },
+  {
+    id:"proposal-eval", title:"Funding review：讓 AI 評估 research proposal", stage:"研究評審", level:"red", levelText:"紅｜敏感且 substantial", evidence:"EU 直接舉例＋funders 明文",
+    teaser:"EU 明示 substantial evaluation 應避免，且 funders 不能讓 GenAI 評估 scientific content。",
+    summary:"在 funding context，AI 可以協助部分內部流程，但 European Commission 明確要求：不應讓 GenAI 在 scientific content 的 assessment / evaluation 中扮演角色。",
+    points:["涉及申請者權益、公平性與 confidential proposal。","hidden prompts 也是 2026 第三版新增的治理問題。","funding organisation 自己使用 AI 也受到 transparency、human oversight 與 confidentiality 約束。"],
+    quote:"“it cannot take a role in the assessment or evaluation of the scientific content of projects.”",
+    quoteNote:"European Commission (2026), p. 11, Recommendations for Research Funding Organisations #2.",
+    sources:[{label:"Living Guidelines, p. 11",meta:"Funders：GenAI 不可評估 scientific content",url:PDF_URL},{label:"Living Guidelines, p. 9, footnote 28",meta:"evaluating a funding proposal = substantial use",url:PDF_URL}],
+    note:"這是文件中規範最清楚的紅區之一。"
+  },
+  {
+    id:"funding-application", title:"AI 協助撰寫研究計畫申請書", stage:"計畫申請", level:"yellow", levelText:"黃｜視情境而定", evidence:"EU 對 applicants 有明確揭露要求",
+    teaser:"基本文字協助可較低；若 AI 形成研究 aim、hypothesis 或 analysis plan，則 substantial。",
+    summary:"EU 要求 applicants 宣告是否 substantially used GenAI 準備申請，並說明 GenAI 在 proposed research activities 中的角色。",
+    points:["basic support for authors ≠ substantial。","research gap、aims、hypotheses、interpreting analysis 等可屬 substantial impact。","substantial use 在申請情境主要觸發透明揭露，不等於申請本身不合規。"],
+    quote:"“Applicants declare if they substantially used generative AI tool(s) to prepare their application.”",
+    quoteNote:"European Commission (2026), p. 11, Recommendations for Research Funding Organisations #3.",
+    sources:[{label:"Living Guidelines, p. 11",meta:"Applicants 對 substantial use 的 transparency requirement",url:PDF_URL}],
+    note:"此案例最適合說明：substantial 是治理門檻，不是道德罪名。"
+  }
+];
+
+const levelOrder = {green:1,yellow:2,orange:3,red:4};
+let currentFilter = "all";
+let selectedId = null;
+
+const caseList = document.getElementById("caseList");
+const empty = document.getElementById("empty");
+const search = document.getElementById("search");
+const filterRow = document.getElementById("filterRow");
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+}
+
+function renderList(){
+  const q = search.value.trim().toLowerCase();
+  const filtered = cases.filter(c => {
+    const okLevel = currentFilter === "all" || c.level === currentFilter;
+    const blob = [c.title,c.stage,c.teaser,c.summary,...c.points,c.levelText].join(" ").toLowerCase();
+    return okLevel && (!q || blob.includes(q));
+  });
+  filtered.sort((a,b)=>levelOrder[a.level]-levelOrder[b.level]);
+  caseList.innerHTML = filtered.map(c => `
+    <button class="case-card ${selectedId===c.id?'active':''}" data-id="${esc(c.id)}" aria-pressed="${selectedId===c.id}">
+      <div class="case-top">
+        <span class="case-level"><span class="dot ${c.level}"></span>${esc(c.levelText)}</span>
+        <span class="case-stage">${esc(c.stage)}</span>
+      </div>
+      <h3>${esc(c.title)}</h3>
+      <p>${esc(c.teaser)}</p>
+    </button>`).join("");
+  empty.style.display = filtered.length ? "none" : "block";
+  caseList.querySelectorAll(".case-card").forEach(btn => btn.addEventListener("click",()=>selectCase(btn.dataset.id,true)));
+}
+
+function selectCase(id, pushHash=false){
+  const c = cases.find(x=>x.id===id) || cases[0];
+  selectedId = c.id;
+  document.getElementById("detailLevel").className = `level-pill ${c.level}`;
+  document.getElementById("detailLevel").innerHTML = `<span class="dot ${c.level}"></span>${esc(c.levelText)}`;
+  document.getElementById("detailEvidence").textContent = c.evidence;
+  document.getElementById("detailTitle").textContent = c.title;
+  document.getElementById("detailSummary").textContent = c.summary;
+  document.getElementById("detailPoints").innerHTML = c.points.map(x=>`<li>${esc(x)}</li>`).join("");
+  document.getElementById("detailQuote").textContent = c.quote;
+  document.getElementById("detailQuoteNote").textContent = c.quoteNote;
+  document.getElementById("detailSources").innerHTML = c.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a><small>${esc(s.meta)}</small></li>`).join("");
+  document.getElementById("detailNote").textContent = c.note;
+  if(pushHash && location.hash !== `#${c.id}`) history.pushState(null,"",`#${c.id}`);
+  renderList();
+}
+
+filterRow.addEventListener("click",e=>{
+  const b = e.target.closest("button[data-filter]"); if(!b) return;
+  currentFilter = b.dataset.filter;
+  filterRow.querySelectorAll(".filter-btn").forEach(x=>x.classList.toggle("active",x===b));
+  renderList();
+});
+search.addEventListener("input",renderList);
+
+window.addEventListener("hashchange",()=>{
+  const id = location.hash.replace(/^#/,"");
+  if(cases.some(c=>c.id===id)) selectCase(id,false);
+});
+
+document.getElementById("copyLink").addEventListener("click",async()=>{
+  const url = location.href.split("#")[0] + "#" + selectedId;
+  const btn = document.getElementById("copyLink");
+  try{
+    await navigator.clipboard.writeText(url);
+    btn.textContent = "已複製連結";
+  }catch(e){
+    const t=document.createElement("textarea");t.value=url;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();btn.textContent="已複製連結";
+  }
+  setTimeout(()=>btn.textContent="複製此案例連結",1600);
+});
+
+const initial = location.hash.replace(/^#/,"");
+selectCase(cases.some(c=>c.id===initial) ? initial : cases[0].id,false);
+</script>
+</body>
+</html>

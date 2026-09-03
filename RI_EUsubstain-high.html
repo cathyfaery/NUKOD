@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Substantial Use｜高中小論文 AI 使用判斷尺</title>
+  <style>
+    :root {
+      --paper: #f2f8ff;
+      --ink: #172033;
+      --muted: #5c667a;
+      --line: #c9dced;
+      --blue: #17466f;
+      --blue-soft: #e3f0fb;
+      --green: #2f7d52;
+      --yellow: #b87916;
+      --orange: #c45f2b;
+      --red: #aa3030;
+      --green-soft: #e8f2eb;
+      --yellow-soft: #fff4d9;
+      --orange-soft: #fbe8dc;
+      --red-soft: #fae2e1;
+      --shadow: 0 18px 50px rgba(23, 70, 111, .1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Serif TC", "Noto Serif CJK TC", "Source Han Serif TC", "PMingLiU", serif;
+      font-size: 18px;
+      line-height: 1.78;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    a {
+      color: var(--blue);
+    }
+
+    .page {
+      width: min(1440px, calc(100% - 22px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 48px 0 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 1.02rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 1120px;
+      font-size: clamp(2.35rem, 4.5vw, 4rem);
+      line-height: 1.18;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 1080px;
+      margin: 18px 0 0;
+      font-size: clamp(1.22rem, 2vw, 1.58rem);
+      color: #30394d;
+    }
+
+    .source-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .source-card {
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      padding: 18px;
+      border-radius: 8px;
+    }
+
+    .source-card strong {
+      display: block;
+      color: var(--blue);
+      font-size: 1.16rem;
+      margin-bottom: 4px;
+    }
+
+    .source-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .notice {
+      margin: 28px 0 0;
+      padding: 20px 22px;
+      border-left: 6px solid var(--red);
+      background: #fff6f1;
+      border-radius: 0 8px 8px 0;
+      font-size: 1.28rem;
+    }
+
+    .notice strong {
+      color: var(--red);
+    }
+
+    .section {
+      padding: 36px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--blue);
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      line-height: 1.25;
+    }
+
+    .section-note {
+      margin: 0;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(242, 248, 255, .96);
+      backdrop-filter: blur(10px);
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toolbar-inner {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      color: var(--ink);
+      border-radius: 8px;
+      font-size: 1.13rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip,
+    .tab {
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      color: var(--ink);
+      padding: 10px 15px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .18s ease;
+      font-size: 1.04rem;
+    }
+
+    .chip:hover,
+    .tab:hover,
+    .chip.active,
+    .tab.active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: white;
+    }
+
+    .stage-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 18px 0 20px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(440px, .92fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .case-card {
+      text-align: left;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 205px;
+      cursor: pointer;
+      box-shadow: none;
+      transition: .18s ease;
+    }
+
+    .case-card:hover,
+    .case-card.active {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: var(--shadow);
+    }
+
+    .case-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .stage-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: .98rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .level {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+    }
+
+    .dot.s0 { background: var(--green); }
+    .dot.s1 { background: var(--yellow); }
+    .dot.s2 { background: var(--orange); }
+    .dot.s3 { background: var(--red); }
+
+    .case-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.38rem;
+      line-height: 1.38;
+    }
+
+    .case-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .detail {
+      position: sticky;
+      top: 98px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 8px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .detail h3 {
+      margin: 6px 0 8px;
+      font-size: 1.9rem;
+      line-height: 1.3;
+      color: var(--blue);
+    }
+
+    .detail .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .badge.s0 { background: var(--green-soft); color: var(--green); }
+    .badge.s1 { background: var(--yellow-soft); color: var(--yellow); }
+    .badge.s2 { background: var(--orange-soft); color: var(--orange); }
+    .badge.s3 { background: var(--red-soft); color: var(--red); }
+    .badge.rule { background: var(--blue-soft); color: var(--blue); }
+
+    .detail-block {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-block h4 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 1.18rem;
+    }
+
+    .detail-block p,
+    .detail-block li {
+      color: #30394d;
+      font-size: 1.13rem;
+    }
+
+    .detail-block ul {
+      margin: 8px 0 0;
+      padding-left: 1.2em;
+    }
+
+    .quote {
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      background: #eef7ff;
+      border-radius: 8px;
+      color: #384155;
+      font-size: 1.04rem;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .guide-card {
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .guide-card h3 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 1.32rem;
+    }
+
+    .guide-card p {
+      margin: 7px 0 0;
+      color: #30394d;
+      font-size: 1.08rem;
+    }
+
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .scale-card {
+      border-radius: 8px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .scale-card h3 {
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.22rem;
+    }
+
+    .scale-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .questions {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      counter-reset: q;
+    }
+
+    .question {
+      counter-increment: q;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 160px;
+    }
+
+    .question::before {
+      content: counter(q);
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .question h3 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+      color: var(--blue);
+    }
+
+    .question p {
+      margin: 0;
+      color: #30394d;
+      font-size: 1.04rem;
+    }
+
+    .worklog {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 16px;
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .log-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 18px;
+    }
+
+    .log-panel p {
+      margin: 0 0 12px;
+      color: #30394d;
+    }
+
+    .primary {
+      border: 0;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .empty {
+      display: none;
+      padding: 24px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+      background: #fbfdff;
+    }
+
+    .sources {
+      border-top: 1px solid var(--line);
+      padding: 34px 0 52px;
+      color: #30394d;
+    }
+
+    .sources h2 {
+      font-size: 1.45rem;
+    }
+
+    .sources ol {
+      padding-left: 1.35em;
+    }
+
+    @media (max-width: 980px) {
+      .source-strip,
+      .guide-grid,
+      .scale,
+      .questions,
+      .worklog,
+      .layout,
+      .toolbar-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        justify-content: flex-start;
+      }
+
+      .detail {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 16px, 1440px);
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="page">
+      <p class="eyebrow">高中小論文版｜Substantial Use 生成式 AI 使用判斷尺</p>
+      <h1>AI 可以幫我想，但不能替我寫成小論文。</h1>
+      <p class="subtitle">把 EC 2026 的 substantial use 概念，轉成全國高級中等學校小論文六大架構的互動判斷頁。給學生看灰區，也給老師一套可以討論的語言。</p>
+
+      <div class="source-strip" aria-label="三個判斷來源">
+        <div class="source-card">
+          <strong>比賽規定先決定投件紅線</strong>
+          <p>115 學年度實施計畫明列：可用 AI 做主題發想；文章內容含摘要、改寫、圖表不得以 AI 工具生成。</p>
+        </div>
+        <div class="source-card">
+          <strong>EC 2026 解釋實質介入</strong>
+          <p>AI 若進入文獻回顧、研究缺口、研究目的、假設、方法或結果解釋，通常已接近 substantial use。</p>
+        </div>
+        <div class="source-card">
+          <strong>臺灣研究誠信守則作為底層語言</strong>
+          <p>誠實、尊重、嚴謹、課責、透明，可轉成高中生能理解的查證、引註、紀錄與負責。</p>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>投件提醒：</strong>這個頁面不是放寬比賽規定。它的用途是幫學生判斷「哪些 AI 使用容易越線」，並把做法改回由學生自己閱讀、分析、改寫、製圖與下結論。
+      </div>
+    </div>
+  </header>
+
+  <nav class="toolbar" aria-label="案例篩選">
+    <div class="page toolbar-inner">
+      <input id="search" class="search" type="search" placeholder="搜尋案例，例如：文獻、改寫、圖表、研究方法、結論、參考文獻">
+      <div class="filters" aria-label="substantiality 篩選">
+        <button class="chip active" data-level="all">全部</button>
+        <button class="chip" data-level="s0">綠｜低</button>
+        <button class="chip" data-level="s1">黃｜灰區</button>
+        <button class="chip" data-level="s2">橘｜高</button>
+        <button class="chip" data-level="s3">紅｜不宜投件</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section page">
+      <div class="section-head">
+        <h2>按小論文六大架構看 AI 灰區</h2>
+        <p class="section-note">點開案例後，右側會顯示 substantiality、比賽投件判斷、學生改善做法、老師可追問的問題與短引來源。</p>
+      </div>
+
+      <div class="stage-tabs" aria-label="章節篩選">
+        <button class="tab active" data-stage="all">全部章節</button>
+        <button class="tab" data-stage="front">壹、前言</button>
+        <button class="tab" data-stage="review">貳、文獻探討</button>
+        <button class="tab" data-stage="method">參、研究方法</button>
+        <button class="tab" data-stage="analysis">肆、分析與結果</button>
+        <button class="tab" data-stage="conclusion">伍、結論與建議</button>
+        <button class="tab" data-stage="refs">陸、參考文獻</button>
+        <button class="tab" data-stage="process">投稿與紀錄</button>
+      </div>
+
+      <div class="layout">
+        <div>
+          <div id="caseGrid" class="case-grid"></div>
+          <div id="empty" class="empty">找不到符合條件的案例。可以換一個章節或關鍵字。</div>
+        </div>
+        <aside id="detail" class="detail" aria-live="polite"></aside>
+      </div>
+    </section>
+
+    <section class="section page">
+      <div class="section-head">
+        <h2>六大架構的教學提醒</h2>
+        <p class="section-note">小論文比賽評審看的是學生有沒有真的完成研究學習。AI 一旦替學生完成章節中的認知工作，風險就會上升。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3>壹、前言</h3>
+          <p><strong>評審看：</strong>背景、動機、目的與問題是否清楚。</p>
+          <p><strong>AI 灰區：</strong>AI 直接替學生定題目、定研究問題，會讓整篇文章的出發點變成外包。</p>
+        </div>
+        <div class="guide-card">
+          <h3>貳、文獻探討</h3>
+          <p><strong>評審看：</strong>資料是否相關、客觀、系統，概念是否正確。</p>
+          <p><strong>AI 灰區：</strong>只讀 AI 摘要、不讀原文，或讓 AI 綜整文獻，容易失去真正理解。</p>
+        </div>
+        <div class="guide-card">
+          <h3>參、研究方法</h3>
+          <p><strong>評審看：</strong>概念架構、研究方法與流程是否合宜。</p>
+          <p><strong>AI 灰區：</strong>學生不懂方法差異，直接接受 AI 建議，方法責任會變薄。</p>
+        </div>
+        <div class="guide-card">
+          <h3>肆、研究分析與結果</h3>
+          <p><strong>評審看：</strong>分析完整、邏輯清楚、圖表正確，結果闡釋合宜。</p>
+          <p><strong>AI 灰區：</strong>AI 代為整理數據、製圖或解釋結果，若進入文章內容，依比賽規定高度不宜。</p>
+        </div>
+        <div class="guide-card">
+          <h3>伍、研究結論與建議</h3>
+          <p><strong>評審看：</strong>結論是否回應研究目的，建議是否合宜。</p>
+          <p><strong>AI 灰區：</strong>Discussion、貢獻、限制與建議由 AI 代寫，會直接碰到研究判斷。</p>
+        </div>
+        <div class="guide-card">
+          <h3>陸、參考文獻</h3>
+          <p><strong>評審看：</strong>尊重著作權、正確引註，參考文獻與內文互相對得上。</p>
+          <p><strong>AI 灰區：</strong>AI 產生不存在或錯誤來源，即使格式像 APA，也不能放入參考文獻。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section page">
+      <div class="section-head">
+        <h2>四色判斷尺</h2>
+        <p class="section-note">這是依 EC 2026 操作化後的教學分級，不是 EC 官方分級；在高中小論文投件時，仍以比賽規定為準。</p>
+      </div>
+      <div class="scale">
+        <div class="scale-card">
+          <h3><span class="dot s0"></span> S0 綠｜表達性輔助</h3>
+          <p>例如檢查錯字、提醒格式。若沒有生成文章內容，通常 substantiality 較低。</p>
+        </div>
+        <div class="scale-card">
+          <h3><span class="dot s1"></span> S1 黃｜學習性輔助</h3>
+          <p>例如解釋概念、給搜尋關鍵字、主題發想。要留下自己的閱讀、選擇與理由。</p>
+        </div>
+        <div class="scale-card">
+          <h3><span class="dot s2"></span> S2 橘｜形成性介入</h3>
+          <p>AI 開始形塑研究問題、文獻綜整、方法、分析或結論。EC 認為可能 substantial；小論文投件通常要改回人工完成。</p>
+        </div>
+        <div class="scale-card">
+          <h3><span class="dot s3"></span> S3 紅｜代行內容或判斷</h3>
+          <p>AI 生成摘要、改寫、圖表、章節正文或參考文獻。依小論文規定，不宜作為參賽作品內容。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section page">
+      <div class="section-head">
+        <h2>給學生的五問</h2>
+        <p class="section-note">交稿前，請學生不要只問「我有沒有改過」，而要問 AI 是否影響研究如何形成。</p>
+      </div>
+      <div class="questions">
+        <div class="question">
+          <h3>反事實性</h3>
+          <p>沒有 AI，我是否還能寫出同樣的研究問題、分析與結論？</p>
+        </div>
+        <div class="question">
+          <h3>核心性</h3>
+          <p>AI 是否做了這一章最需要我自己完成的思考工作？</p>
+        </div>
+        <div class="question">
+          <h3>依賴性</h3>
+          <p>我是否能自己重讀資料、重做分析，並說明為何這樣寫？</p>
+        </div>
+        <div class="question">
+          <h3>決策性</h3>
+          <p>AI 是否改變了題目、方法、資料取捨、解釋或建議？</p>
+        </div>
+        <div class="question">
+          <h3>可見性</h3>
+          <p>若不說明 AI 曾介入，老師或評審是否會誤解這篇文章如何形成？</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section page">
+      <div class="section-head">
+        <h2>AI 使用紀錄範本</h2>
+        <p class="section-note">小論文正文不得以 AI 生成。若學生只用 AI 做主題發想或學習輔助，建議另留紀錄供老師討論，不放入參賽正文。</p>
+      </div>
+      <div class="worklog">
+        <textarea id="logText" spellcheck="false">AI 使用紀錄（供指導老師檢視，不作為小論文正文）
+
+1. 使用日期：
+2. 使用工具：
+3. 我使用 AI 的目的：
+4. 我輸入的大致問題：
+5. AI 給我的方向或提醒：
+6. 我實際閱讀、查證的資料：
+7. 我最後採用／未採用的理由：
+8. 哪些內容由我自己重新撰寫、分析或製圖：
+9. 指導老師討論紀錄：</textarea>
+        <div class="log-panel">
+          <p><strong>老師可用這份紀錄追問：</strong></p>
+          <p>學生是否只是拿 AI 當發想或理解輔助？有沒有把 AI 文字、摘要、改寫、圖表放進正文？能不能說明資料來源、方法選擇與結論如何形成？</p>
+          <button id="copyLog" class="primary">複製紀錄範本</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sources page">
+      <h2>主要依據</h2>
+      <ol>
+        <li>European Commission, Directorate-General for Research and Innovation. (2026). <em>Living guidelines on the responsible use of generative AI in research</em> (Third version, May 2026). 主要參照 p. 8 footnote 21 及 p. 9 footnote 28。</li>
+        <li>中學生網站。〈115學年度全國高級中等學校小論文寫作比賽實施計畫〉，2026/08/03 公告。另參照附件內〈全國高級中等學校小論文寫作比賽格式說明暨評審要點〉。</li>
+        <li>臺灣研究誠信守則起草委員會。(2020). <em>臺灣研究誠信守則</em>。台灣聯合大學系統。</li>
+        <li>製作者｜國立高雄大學資訊管理學系林杏子老師／臺灣學術倫理教育學會理事／中華企業倫理教育協進會理事／中華民國群我倫理促進會理事／成功大學研究倫理審查專家</li>
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    const sourceTexts = {
+      shsTopic: {
+        label: "小論文實施計畫",
+        quote: "「學生可利用AI工具進行主題之發想」",
+        note: "115學年度實施計畫，參賽注意事項。"
+      },
+      shsNoContent: {
+        label: "小論文實施計畫",
+        quote: "「不得以任何AI工具生成」",
+        note: "同文件明列文章內容含摘要、改寫、圖表等。"
+      },
+      shsSix: {
+        label: "格式說明暨評審要點",
+        quote: "「小論文之基本架構分為六大段落」",
+        note: "壹前言至陸參考文獻，並須依序書寫。"
+      },
+      shsRefs: {
+        label: "格式說明暨評審要點",
+        quote: "「直接或間接引用...須註明資料出處」",
+        note: "引註與參考文獻須能互相對照。"
+      },
+      ecSubstantial: {
+        label: "EC 2026",
+        quote: "\"meaningfully shapes results\"",
+        note: "p. 8，使用 substantially 的透明揭露脈絡。"
+      },
+      ecExamples: {
+        label: "EC 2026, footnote 21",
+        quote: "\"identifying research gaps\"",
+        note: "同註腳也列 literature review、research aims、hypotheses 等。"
+      },
+      ecEditorial: {
+        label: "EC 2026, footnote 21",
+        quote: "\"basic editorial support\"",
+        note: "EC 指出基礎編修通常不是 substantial use。"
+      },
+      ecCitations: {
+        label: "EC 2026",
+        quote: "\"Invented Citations and Incorrect Summaries\"",
+        note: "p. 7-8，研究者需查核引文與摘要內容。"
+      },
+      twHonesty: {
+        label: "臺灣研究誠信守則",
+        quote: "「避免作出毫無根據的推論」",
+        note: "研究誠信原則：誠實。"
+      },
+      twRecord: {
+        label: "臺灣研究誠信守則",
+        quote: "「完整、清楚、準確與客觀」",
+        note: "研究資料、數據與方法紀錄應可驗證或重現。"
+      }
+    };
+
+    const levels = {
+      s0: { short: "綠｜低", long: "S0 綠｜表達性輔助", className: "s0" },
+      s1: { short: "黃｜灰區", long: "S1 黃｜學習性輔助", className: "s1" },
+      s2: { short: "橘｜高", long: "S2 橘｜形成性介入", className: "s2" },
+      s3: { short: "紅｜不宜投件", long: "S3 紅｜代行內容或判斷", className: "s3" }
+    };
+
+    const stages = {
+      front: "壹、前言",
+      review: "貳、文獻探討",
+      method: "參、研究方法",
+      analysis: "肆、分析與結果",
+      conclusion: "伍、結論與建議",
+      refs: "陸、參考文獻",
+      process: "投稿與紀錄"
+    };
+
+    const cases = [
+      {
+        id: "topic-brainstorm",
+        stage: "front",
+        level: "s1",
+        title: "請 AI 幫忙發想小論文題目",
+        summary: "可以當作暖身，但題目要由學生依資料、能力與研究問題重新收斂。",
+        scenario: "學生問 AI：請給我十個關於校園飲食浪費的小論文題目。",
+        judgment: "比賽規定允許主題發想；真正投件時，題目、研究目的與問題仍要由學生自己定義。",
+        why: "在 EC 的邏輯中，題目發想若只是刺激思考，substantiality 較低；若 AI 的題目直接成為整篇研究的骨架，就會升高。",
+        improve: [
+          "把 AI 給的題目當成候選清單，不直接照抄。",
+          "學生用自己的觀察寫出研究動機，再用資料判斷題目是否可做。",
+          "請老師追問：你為什麼選這個題目？你手上能取得什麼資料？"
+        ],
+        teacher: "要求學生交出一張題目收斂表：候選題目、資料可得性、研究問題、放棄理由。",
+        sources: ["shsTopic", "ecSubstantial"]
+      },
+      {
+        id: "ai-research-question",
+        stage: "front",
+        level: "s2",
+        title: "AI 直接幫我形成研究問題",
+        summary: "研究問題會決定整篇小論文怎麼走，不能只把 AI 給的問題拿來用。",
+        scenario: "學生把一段主題描述貼給 AI，請它產生研究目的與三個研究問題，之後直接放入前言。",
+        judgment: "高度不宜。若 AI 文字進入前言正文，已碰到比賽規定的文章內容生成問題。",
+        why: "EC 將 formulating research aims 列為可能有 substantial impact；在小論文中，研究問題也是學生研究能力的核心證據。",
+        improve: [
+          "先由學生自己寫研究目的，再請 AI 只檢查是否太大、太模糊。",
+          "AI 的回饋不能直接放入正文，學生需重寫並說明取捨。",
+          "用一段自己的日常觀察或資料缺口支撐研究問題。"
+        ],
+        teacher: "請學生口頭說明：如果不用 AI，這個問題為什麼仍值得研究？",
+        sources: ["ecExamples", "shsNoContent", "twHonesty"]
+      },
+      {
+        id: "background-paragraph",
+        stage: "front",
+        level: "s3",
+        title: "AI 代寫前言背景與研究動機",
+        summary: "這已是正文生成，不適合放進小論文參賽稿。",
+        scenario: "學生輸入題目後，請 AI 產生 500 字研究背景、動機與目的。",
+        judgment: "不宜投件。小論文文章內容不得由 AI 工具生成。",
+        why: "前言評審重點是學生能否清楚描述研究背景、動機、目的與問題；代寫會使評審誤解學生的研究形成過程。",
+        improve: [
+          "請學生用三句話先寫：我看見什麼現象、我好奇什麼、我想查什麼資料。",
+          "AI 可用來提醒缺少哪類背景資料，但不能代寫段落。",
+          "改用真實資料、新聞、期刊或官方統計建立背景。"
+        ],
+        teacher: "比對學生口頭說明與書面前言：若語氣、概念與學生理解落差過大，需回到草稿重寫。",
+        sources: ["shsNoContent", "shsSix"]
+      },
+      {
+        id: "keywords",
+        stage: "review",
+        level: "s1",
+        title: "AI 幫我找搜尋關鍵字",
+        summary: "可以降低入門難度，但不能取代資料查找與閱讀。",
+        scenario: "學生問 AI：我研究青少年睡眠，應該用哪些中文和英文關鍵字搜尋？",
+        judgment: "可作為學習輔助。投件內容仍須引用學生實際讀過並查證的來源。",
+        why: "AI 提供 keywords 接近背景搜尋輔助；風險在於學生把 AI 說法當作已驗證文獻。",
+        improve: [
+          "用 AI 給的關鍵字到圖書館資料庫、政府網站或 Google Scholar 搜尋。",
+          "每一篇放入文獻探討的資料，都要由學生自己讀過。",
+          "記下搜尋式與篩選理由。"
+        ],
+        teacher: "看學生是否能指出每篇文獻和研究問題的關係，而不是只列一串來源。",
+        sources: ["shsRefs", "ecCitations", "twRecord"]
+      },
+      {
+        id: "single-summary-read",
+        stage: "review",
+        level: "s1",
+        title: "AI 摘要文章，我再讀原文",
+        summary: "可當預讀，但最後理解要回到原文與自己的筆記。",
+        scenario: "學生先請 AI 說明一篇期刊文章大意，再回頭讀原文並做筆記。",
+        judgment: "可控的灰區。AI 摘要不能直接進入正文，學生筆記須回到原文。",
+        why: "EC 提醒即使文獻存在，AI 摘要仍可能錯；因此引用與理解都要由研究者查核。",
+        improve: [
+          "把 AI 摘要標為預讀，不當成引用來源。",
+          "用原文頁碼、段落或表格建立自己的文獻筆記。",
+          "文獻探討只寫學生自己確認過的內容。"
+        ],
+        teacher: "請學生指出：AI 摘要哪裡幫到你？你讀原文後修正了什麼？",
+        sources: ["ecCitations", "shsNoContent", "twRecord"]
+      },
+      {
+        id: "summary-only",
+        stage: "review",
+        level: "s2",
+        title: "只讀 AI 摘要，不讀原文",
+        summary: "理解工作被外包，容易寫出看似完整但沒有根的文獻探討。",
+        scenario: "學生把十篇文章標題丟給 AI，請它摘要後直接據此寫文獻探討。",
+        judgment: "高度不宜。若摘要或改寫進入正文，也會碰到比賽規定。",
+        why: "文獻探討要求客觀、有系統且正確掌握知識；只讀 AI 摘要，學生無法對內容負責。",
+        improve: [
+          "刪除 AI 摘要文字，改成逐篇閱讀後的資料卡。",
+          "每張資料卡寫：研究問題、方法、主要發現、可用之處、限制。",
+          "至少保留能被老師抽問的原文依據。"
+        ],
+        teacher: "抽問一篇文獻：作者怎麼做研究？證據在哪？學生答不出來就不應放入文獻探討。",
+        sources: ["ecCitations", "shsRefs", "shsNoContent"]
+      },
+      {
+        id: "literature-review",
+        stage: "review",
+        level: "s2",
+        title: "AI 幫我完成文獻探討",
+        summary: "這是 EC 明列可能 substantial 的使用；在小論文裡也容易成為正文生成。",
+        scenario: "學生要求 AI 整理五篇資料，直接產生文獻探討段落與小結。",
+        judgment: "不宜作為投件內容。學生可參考架構提醒，但正文需由學生閱讀後重寫。",
+        why: "EC footnote 21 將 carrying out a literature review 列入可能 substantial impact；小論文也明確重視引經據典的整理與辯證。",
+        improve: [
+          "先由學生製作文獻矩陣，再自己寫出異同與缺口。",
+          "AI 可用來檢查矩陣是否少了欄位，不能生成段落。",
+          "每段都要有內文引註，且參考文獻列得出來源。"
+        ],
+        teacher: "要求學生交文獻矩陣，比單看漂亮段落更能看見真實學習。",
+        sources: ["ecExamples", "shsRefs", "shsNoContent"]
+      },
+      {
+        id: "research-gap",
+        stage: "review",
+        level: "s2",
+        title: "AI 幫我找研究缺口",
+        summary: "研究缺口會牽動題目與方法，是 substantiality 很高的灰區。",
+        scenario: "學生請 AI 從十篇資料中找出最值得做的小論文缺口。",
+        judgment: "高度謹慎。若 AI 直接決定缺口，整篇研究的知識方向就被 AI 形塑。",
+        why: "EC 直接列出 identifying research gaps 可能有 substantial impact。",
+        improve: [
+          "學生先用文獻矩陣自行提出缺口。",
+          "AI 只可被用來挑戰：這個缺口是否太大、是否已有研究處理？",
+          "最後缺口要能用已讀文獻與資料可得性說明。"
+        ],
+        teacher: "請學生區分：這是 AI 發現的缺口，還是你讀完資料後能自己辯護的缺口？",
+        sources: ["ecExamples", "twHonesty"]
+      },
+      {
+        id: "method-advice",
+        stage: "method",
+        level: "s2",
+        title: "AI 建議研究方法，我直接採用",
+        summary: "方法不是裝飾，學生要懂為何這個方法能回答問題。",
+        scenario: "學生問 AI：我的題目應該用問卷還是訪談？AI 說問卷，學生照做。",
+        judgment: "高度灰區。若學生不懂方法限制，只是接受 AI 建議，研究方法的責任不足。",
+        why: "EC 的 reliability 涵蓋 design、methodology、analysis；方法選擇會實質影響結果。",
+        improve: [
+          "列出至少兩種可行方法的優缺點。",
+          "說明樣本來源、題項設計、分析方式與限制。",
+          "請 AI 只提醒漏掉哪些倫理或流程問題，不代替選擇。"
+        ],
+        teacher: "追問：你的資料從哪來？這個方法能回答哪一個研究問題？不能回答什麼？",
+        sources: ["ecSubstantial", "twRecord"]
+      },
+      {
+        id: "survey-items",
+        stage: "method",
+        level: "s3",
+        title: "AI 生成問卷題項直接使用",
+        summary: "研究工具會影響資料品質，不能只是看起來像問卷。",
+        scenario: "學生請 AI 產生 20 題問卷，沒有檢查構念、語意與偏誤就發出去。",
+        judgment: "不宜直接使用。若題項成為研究工具，AI 已進入方法與資料生成過程。",
+        why: "小論文方法要說明概念架構與流程是否合宜；研究工具若由 AI 代為形成，學生需重新審查與修訂。",
+        improve: [
+          "先由學生定義構念與題項目的。",
+          "參考已公開的量表或文獻，並正確引註。",
+          "AI 只能作為檢查語句是否模糊的輔助，最後題項由學生與老師確認。"
+        ],
+        teacher: "要求學生說明每一題對應哪個研究概念，刪掉無法說明的題目。",
+        sources: ["shsNoContent", "twRecord"]
+      },
+      {
+        id: "coding-helper",
+        stage: "analysis",
+        level: "s2",
+        title: "AI 幫我把訪談資料分類",
+        summary: "分類與主題形成是分析工作，不能只說我後來有看過。",
+        scenario: "學生把訪談逐字稿丟給 AI，請它整理成四個主題。",
+        judgment: "高度 substantial；若整理結果成為正文或表格，投件風險很高。",
+        why: "AI 若作為分析方法或形成 themes，已參與研究分析。EC 將 using generative AI as a method 列入 substantial 相關例子。",
+        improve: [
+          "學生先自行編碼，AI 最多作為第二輪提醒不同分類可能。",
+          "保留編碼規則、例句與修正理由。",
+          "訪談若含個資或敏感內容，不應上傳外部 AI。"
+        ],
+        teacher: "看學生是否能說明分類規則，而不是只會背 AI 給的主題名稱。",
+        sources: ["ecExamples", "shsNoContent", "twRecord"]
+      },
+      {
+        id: "data-chart",
+        stage: "analysis",
+        level: "s3",
+        title: "AI 生成圖表直接放進小論文",
+        summary: "小論文規定特別把圖表列入不得 AI 生成的內容。",
+        scenario: "學生把數據貼給 AI，請它產生圖表與圖說，直接放進肆、研究分析與結果。",
+        judgment: "不宜投件。比賽規定明列文章內容含圖表不得以 AI 工具生成。",
+        why: "圖表不只是美化；它會決定讀者如何看見資料與結果。AI 介入圖表製作會影響分析呈現。",
+        improve: [
+          "學生用試算表自行製圖，圖表下方標明資料來源。",
+          "AI 可提醒圖表類型選擇的優缺點，但不得代為生成投件圖表。",
+          "每張圖表都要能回到原始資料。"
+        ],
+        teacher: "請學生現場打開資料表，說明圖表怎麼來、座標軸代表什麼。",
+        sources: ["shsNoContent", "shsRefs", "twRecord"]
+      },
+      {
+        id: "result-interpretation",
+        stage: "analysis",
+        level: "s2",
+        title: "AI 幫我解釋研究結果",
+        summary: "結果闡釋是評審明確要看的能力，不能交給 AI 下判斷。",
+        scenario: "學生把問卷統計結果貼給 AI，請它寫出主要發現與意義。",
+        judgment: "高度不宜。若 AI 解釋文字進入正文，投件風險很高。",
+        why: "EC 直接列出 interpreting data analysis 可能 substantial；小論文評審也看研究結果闡釋是否合宜。",
+        improve: [
+          "先用自己的話描述數據：最高、最低、差異、趨勢。",
+          "再回到研究問題說明結果支持或不支持什麼。",
+          "AI 可作為反問工具：這個解釋有沒有過度推論？"
+        ],
+        teacher: "請學生指出哪一句是數據描述，哪一句是解釋，哪一句已經超出資料。",
+        sources: ["ecExamples", "shsNoContent", "twHonesty"]
+      },
+      {
+        id: "conclusion-draft",
+        stage: "conclusion",
+        level: "s3",
+        title: "AI 代寫結論與建議",
+        summary: "結論與建議最能看出學生是否真的完成研究。",
+        scenario: "學生把前面章節貼給 AI，請它寫 600 字結論、研究限制與未來建議。",
+        judgment: "不宜投件。結論正文不得由 AI 生成，且它直接替學生作研究判斷。",
+        why: "結論需回應研究目的、處理研究問題並提出合宜建議；這些都是研究者的判斷。",
+        improve: [
+          "用三欄表先整理：研究問題、我的發現、我能提出的建議。",
+          "每個建議都要能回扣資料，不寫超出研究範圍的大話。",
+          "AI 可用來檢查結論是否與前言對齊，但不可代寫。"
+        ],
+        teacher: "問學生：哪一個建議是由哪一項結果推來的？若接不起來，請重寫。",
+        sources: ["shsNoContent", "twHonesty"]
+      },
+      {
+        id: "title-polish",
+        stage: "front",
+        level: "s0",
+        title: "請 AI 提醒題目是否太長或不清楚",
+        summary: "若只做標題清晰度檢查，通常屬低風險。",
+        scenario: "學生已完成研究後，請 AI 判斷標題是否太長、是否缺少研究對象。",
+        judgment: "可作為表達性輔助；仍由學生自己決定題目。",
+        why: "接近 EC 所說 basic editorial support。它沒有改變研究問題、方法或結論。",
+        improve: [
+          "只要求 AI 指出不清楚處，不請它改寫成可直接投稿的題名。",
+          "學生自己根據研究對象、變項或範圍修改。",
+          "確認頁首題名與投稿系統題名一致。"
+        ],
+        teacher: "看標題是否精準反映正文，而不是只追求漂亮。",
+        sources: ["ecEditorial", "shsSix"]
+      },
+      {
+        id: "grammar-check",
+        stage: "process",
+        level: "s0",
+        title: "AI 協助檢查錯字與格式提醒",
+        summary: "可限縮在錯字、標點、段落標題、頁首頁碼等檢查。",
+        scenario: "學生完成全文後，請 AI 列出可能錯字與六大架構標題是否齊全。",
+        judgment: "可作為最後檢核，但不能讓 AI 改寫句子或重寫段落。",
+        why: "EC 指出 basic editorial support 通常不是 substantial use；小論文仍需避免 AI 生成摘要、改寫或正文。",
+        improve: [
+          "使用明確提示：只列錯字與格式問題，不改寫。",
+          "學生逐項人工修正，保留修正紀錄。",
+          "若 AI 建議重寫，停止採用。"
+        ],
+        teacher: "可提供班級共用格式檢核表，降低學生把格式檢查變成 AI 改寫的誘惑。",
+        sources: ["ecEditorial", "shsNoContent", "shsSix"]
+      },
+      {
+        id: "translation",
+        stage: "process",
+        level: "s3",
+        title: "AI 翻譯或改寫成可投稿段落",
+        summary: "小論文規定已把摘要、翻譯、改寫納入不得 AI 生成的範圍。",
+        scenario: "學生先用中文寫，再請 AI 翻成英文寫作類小論文，或請 AI 改寫得更學術。",
+        judgment: "不宜投件。即使原意來自學生，AI 生成的翻譯或改寫進入正文仍有規定風險。",
+        why: "比賽評審要看學生的撰寫能力與資料運用能力；AI 生成語句會使成果歸屬變得不清楚。",
+        improve: [
+          "學生自行翻譯或改寫，再請老師或同儕指出不清楚處。",
+          "可查字典、語料庫或文法書，但不要讓 AI 生成整句或整段。",
+          "保留草稿版本，顯示學生如何修正。"
+        ],
+        teacher: "若文風突然成熟到超出學生能力，請回到草稿與口頭說明檢查。",
+        sources: ["shsNoContent", "ecEditorial"]
+      },
+      {
+        id: "invented-citation",
+        stage: "refs",
+        level: "s3",
+        title: "AI 產生參考文獻或 DOI",
+        summary: "格式像真的不等於來源存在。參考文獻錯誤會直接扣分或構成嚴重問題。",
+        scenario: "學生請 AI 補三篇參考文獻，沒有查到原始來源就放入陸、參考文獻。",
+        judgment: "不宜投件。不存在或錯誤來源不能列入參考文獻。",
+        why: "EC 提醒 AI 可能產生 invented citations；小論文也要求內文有引用、參考文獻列得出供查核的資料。",
+        improve: [
+          "每一筆參考文獻都要能打開原文或官方頁面。",
+          "內文引用與參考文獻逐筆核對。",
+          "AI 不作為資料來源；若它推薦來源，仍須自行查證。"
+        ],
+        teacher: "抽查 DOI、網址、作者與年份。查不到的來源不得計入有效參考文獻。",
+        sources: ["ecCitations", "shsRefs", "twRecord"]
+      },
+      {
+        id: "wiki-forum",
+        stage: "refs",
+        level: "s1",
+        title: "AI 推薦論壇、問答或聊天網站",
+        summary: "小論文規定嚴禁引用論壇、問答或聊天網站內容。",
+        scenario: "AI 推薦學生參考 Reddit、知乎、Dcard 或聊天問答內容，學生想放進文獻探討。",
+        judgment: "不宜直接引用。應回到有效資料來源、官方資料、期刊、書籍或新聞資料。",
+        why: "小論文重視言之有據；論壇或問答內容不適合作為主要研究依據。",
+        improve: [
+          "把論壇內容當作現象線索，不當作文獻。",
+          "追到原始統計、法規、研究或官方公告。",
+          "若研究本身分析網路文本，需另行說明資料蒐集與倫理處理。"
+        ],
+        teacher: "協助學生區分：現象來源、研究文獻、資料來源，三者不能混成一種。",
+        sources: ["shsRefs", "twHonesty"]
+      },
+      {
+        id: "paraphrase",
+        stage: "review",
+        level: "s3",
+        title: "AI 幫我把文獻改寫成自己的話",
+        summary: "改寫也是小論文規定列出的文章內容，不能由 AI 生成。",
+        scenario: "學生貼一段資料，請 AI 改寫成比較不像抄襲的文字。",
+        judgment: "不宜投件。這容易同時碰到 AI 生成與未適當引註問題。",
+        why: "小論文規定間接引用仍須註明出處；用 AI 改寫不能消除來源責任。",
+        improve: [
+          "學生先闔上資料，用自己的話寫出理解。",
+          "再回頭核對是否扭曲原意並加上內文引註。",
+          "若保留原文，須依規定使用直接引用格式與字數限制。"
+        ],
+        teacher: "請學生口頭說明原文意思，再看書面改寫是否真的是學生理解。",
+        sources: ["shsNoContent", "shsRefs"]
+      },
+      {
+        id: "outline",
+        stage: "process",
+        level: "s2",
+        title: "AI 幫我排整篇小論文大綱",
+        summary: "大綱若只是章節提醒可用；若替學生安排論證路徑，風險升高。",
+        scenario: "學生請 AI 依題目產生六大架構完整大綱、各段重點與結論走向。",
+        judgment: "高度灰區。六大架構可查官方格式；論證順序與內容安排應由學生完成。",
+        why: "大綱會決定知識如何被組織。若 AI 的架構保留到最終稿，就接近 substantial use。",
+        improve: [
+          "只使用官方六大章節作為固定外框。",
+          "學生自行填入資料、方法、分析與結論。",
+          "老師可看草稿大綱的修改軌跡。"
+        ],
+        teacher: "要求學生說明每一節和研究問題的關係，避免漂亮但空泛的大綱。",
+        sources: ["shsSix", "ecSubstantial"]
+      },
+      {
+        id: "teacher-feedback",
+        stage: "process",
+        level: "s1",
+        title: "AI 模擬老師提出檢查問題",
+        summary: "若只是問問題、提醒檢核，可以變成學習輔助。",
+        scenario: "學生完成草稿後，請 AI 只提出不清楚處與需要查證的問題，不要求改寫。",
+        judgment: "可作為反思工具。採納前仍須由學生與老師判斷。",
+        why: "AI 作為批判性提問，比 AI 代寫安全；但若 AI 開始改寫正文，就越線。",
+        improve: [
+          "提示 AI：只提問題，不提供可貼上的句子。",
+          "學生逐題回到資料與草稿修正。",
+          "把 AI 問題轉成自我檢核表。"
+        ],
+        teacher: "這很適合課堂練習：讓學生學會被問，而不是被代寫。",
+        sources: ["ecSubstantial", "shsNoContent"]
+      },
+      {
+        id: "copy-ai-text",
+        stage: "process",
+        level: "s3",
+        title: "AI 先寫，我再大改",
+        summary: "判斷重點不是改了多少字，而是最後留下誰的推理。",
+        scenario: "學生讓 AI 先寫全文，再改詞、換句、補幾個來源。",
+        judgment: "不宜投件。若最終稿的架構、論點與語句主要由 AI 起稿，仍屬高度風險。",
+        why: "EC 關心 AI 是否 meaningfully shapes results；小論文規定也禁止 AI 生成文章內容。",
+        improve: [
+          "不要使用 AI 起稿正文。",
+          "改從學生自己的資料卡、方法紀錄與分析表寫起。",
+          "保留從手寫或初稿到修稿的過程。"
+        ],
+        teacher: "請學生交草稿歷程，比只交最後 PDF 更能保護誠信與學習。",
+        sources: ["ecSubstantial", "shsNoContent", "twRecord"]
+      },
+      {
+        id: "sensitive-data",
+        stage: "method",
+        level: "s3",
+        title: "把同學訪談或問卷原始資料上傳 AI",
+        summary: "即使不生成正文，也可能碰到隱私與資料保護問題。",
+        scenario: "學生把含姓名、班級、聊天紀錄或敏感經驗的資料貼到外部 AI。",
+        judgment: "高度不宜。研究倫理風險和 substantiality 要分開看，資料不該進去就不該進去。",
+        why: "EC 要求特別注意 privacy、confidentiality 與 intellectual property；臺灣守則也要求妥善紀錄與負責。",
+        improve: [
+          "不要上傳可識別個人的原始資料。",
+          "先去識別化，且仍需確認工具與學校規範。",
+          "敏感題目應由老師協助設計資料處理方式。"
+        ],
+        teacher: "建立班級資料處理規則：哪些資料不能上傳、哪些需去識別、哪些需取得同意。",
+        sources: ["ecSubstantial", "twRecord"]
+      },
+      {
+        id: "ai-detection",
+        stage: "process",
+        level: "s1",
+        title: "老師用 AI 偵測器判斷學生是否使用 AI",
+        summary: "偵測器不能取代教學判斷，應搭配草稿、口頭說明與資料紀錄。",
+        scenario: "老師看到偵測器標示高比例 AI，想直接判定學生違規。",
+        judgment: "需謹慎。偵測結果只能作為線索，不宜單獨作為結論。",
+        why: "EC 透明原則也提到 AI 可用於偵測不良實務，但須保有人類監督。",
+        improve: [
+          "請學生提供資料卡、草稿歷程與 AI 使用紀錄。",
+          "安排簡短口頭說明，確認學生是否掌握內容。",
+          "疑似問題依校內程序處理，避免只看工具分數。"
+        ],
+        teacher: "把偵測器當成提醒，而不是裁判。真正重要的是學生能否說明研究怎麼形成。",
+        sources: ["ecSubstantial", "twRecord"]
+      }
+    ];
+
+    const state = {
+      level: "all",
+      stage: "all",
+      query: "",
+      selectedId: window.location.hash ? window.location.hash.slice(1) : cases[0].id
+    };
+
+    const grid = document.getElementById("caseGrid");
+    const detail = document.getElementById("detail");
+    const empty = document.getElementById("empty");
+    const search = document.getElementById("search");
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function caseMatches(item) {
+      const haystack = [
+        item.title,
+        item.summary,
+        item.scenario,
+        item.judgment,
+        item.why,
+        stages[item.stage],
+        levels[item.level].long
+      ].join(" ").toLowerCase();
+      return (state.level === "all" || item.level === state.level)
+        && (state.stage === "all" || item.stage === state.stage)
+        && (!state.query || haystack.includes(state.query.toLowerCase()));
+    }
+
+    function renderCases() {
+      const filtered = cases.filter(caseMatches);
+
+      if (!filtered.some(item => item.id === state.selectedId) && filtered.length) {
+        state.selectedId = filtered[0].id;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const level = levels[item.level];
+        return `
+          <button class="case-card ${item.id === state.selectedId ? "active" : ""}" data-id="${escapeHtml(item.id)}">
+            <div class="case-top">
+              <span class="stage-tag">${escapeHtml(stages[item.stage])}</span>
+              <span class="level"><span class="dot ${level.className}"></span>${escapeHtml(level.short)}</span>
+            </div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.summary)}</p>
+          </button>
+        `;
+      }).join("");
+
+      empty.style.display = filtered.length ? "none" : "block";
+
+      document.querySelectorAll(".case-card").forEach(button => {
+        button.addEventListener("click", () => {
+          state.selectedId = button.dataset.id;
+          history.replaceState(null, "", "#" + state.selectedId);
+          renderCases();
+          renderDetail();
+        });
+      });
+    }
+
+    function renderDetail() {
+      const item = cases.find(entry => entry.id === state.selectedId) || cases[0];
+      const level = levels[item.level];
+      const sourceHtml = item.sources.map(key => {
+        const source = sourceTexts[key];
+        return `
+          <div class="quote">
+            <strong>${escapeHtml(source.label)}</strong><br>
+            ${escapeHtml(source.quote)}<br>
+            <span>${escapeHtml(source.note)}</span>
+          </div>
+        `;
+      }).join("");
+
+      detail.innerHTML = `
+        <div class="meta">
+          <span class="badge rule">${escapeHtml(stages[item.stage])}</span>
+          <span class="badge ${level.className}"><span class="dot ${level.className}"></span>${escapeHtml(level.long)}</span>
+        </div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+
+        <div class="detail-block">
+          <h4>學生常見做法</h4>
+          <p>${escapeHtml(item.scenario)}</p>
+        </div>
+
+        <div class="detail-block">
+          <h4>投件判斷</h4>
+          <p>${escapeHtml(item.judgment)}</p>
+        </div>
+
+        <div class="detail-block">
+          <h4>為什麼這樣判斷</h4>
+          <p>${escapeHtml(item.why)}</p>
+        </div>
+
+        <div class="detail-block">
+          <h4>怎麼改成合宜做法</h4>
+          <ul>${item.improve.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>
+        </div>
+
+        <div class="detail-block">
+          <h4>老師可追問</h4>
+          <p>${escapeHtml(item.teacher)}</p>
+        </div>
+
+        <div class="detail-block">
+          <h4>原引文與出處</h4>
+          ${sourceHtml}
+        </div>
+      `;
+    }
+
+    document.querySelectorAll(".chip").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        state.level = button.dataset.level;
+        renderCases();
+        renderDetail();
+      });
+    });
+
+    document.querySelectorAll(".tab").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        state.stage = button.dataset.stage;
+        renderCases();
+        renderDetail();
+      });
+    });
+
+    search.addEventListener("input", event => {
+      state.query = event.target.value.trim();
+      renderCases();
+      renderDetail();
+    });
+
+    document.getElementById("copyLog").addEventListener("click", async () => {
+      const text = document.getElementById("logText").value;
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById("copyLog").textContent = "已複製";
+        setTimeout(() => document.getElementById("copyLog").textContent = "複製紀錄範本", 1600);
+      } catch (error) {
+        document.getElementById("logText").select();
+      }
+    });
+
+    renderCases();
+    renderDetail();
+  </script>
+</body>
+</html>
